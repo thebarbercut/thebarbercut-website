@@ -1,102 +1,437 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Barber Cut</title>
-    <meta name="google-site-verification" content="igUxugawuaxOXwEffhmYSXQGpKRA53MMXHtkOCaz5kc" />
-
+    <title>The Barber Cut - Salon Appointment Booking</title>
     <style>
+        :root {
+            --primary: #d4af37;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --text-muted: #aaa;
+            --danger: #e63946;
+        }
+
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            text-align: center;
+            padding: 0;
+            display: flex;
+            justify-content: center;
         }
 
-        header {
-            padding: 50px 20px;
-            background: #1c1c1c;
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            min-height: 100vh;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            position: relative;
+            padding-bottom: 80px;
         }
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
+        .banner-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            background-color: #333;
         }
 
-        p {
-            color: #ccc;
-            font-size: 18px;
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        .salon-info {
+            margin-left: 15px;
+            margin-top: 30px;
+        }
+
+        .salon-info h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .salon-info p {
+            margin: 3px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+        .card {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--primary);
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: #fff;
+            box-sizing: border-box;
         }
 
         .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #e0a52b;
-            color: #111;
-            text-decoration: none;
+            background-color: var(--primary);
+            color: #000;
+            border: none;
+            padding: 12px;
+            width: 100%;
             border-radius: 5px;
             font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        section {
-            padding: 40px 20px;
+        .btn:hover {
+            opacity: 0.9;
         }
 
-        .services {
-            max-width: 700px;
-            margin: auto;
-        }
-
-        .service {
-            background: #1c1c1c;
+        .qr-container {
+            text-align: center;
             margin: 15px 0;
-            padding: 20px;
+        }
+
+        .qr-img {
+            width: 180px;
+            height: 180px;
+            border: 2px solid var(--primary);
             border-radius: 8px;
         }
 
-        footer {
-            padding: 20px;
-            background: #1c1c1c;
-            color: #aaa;
+        .price-details {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .warning-text {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .insta-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .receipt {
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #181818;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .status-tag {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-active { background-color: #2e7d32; color: white; }
+        .status-expired { background-color: #c62828; color: white; }
     </style>
 </head>
-
 <body>
 
-    <header>
-        <h1>The Barber Cut</h1>
-        <p>Professional Haircuts & Grooming</p>
-        <a href="#services" class="btn">View Services</a>
-    </header>
+<div class="container">
+    <!-- Banner Image -->
+    <div class="banner-container">
+        <img src="banner.png" alt="Salon Banner" class="banner-img" onerror="this.src='https://via.placeholder.com/480x180?text=The+Barber+Cut'">
+    </div>
 
-    <section id="services">
-        <h2>Our Services</h2>
-
-        <div class="services">
-            <div class="service">
-                <h3>Classic Haircut</h3>
-                <p>Clean and stylish haircut.</p>
-            </div>
-
-            <div class="service">
-                <h3>Beard Styling</h3>
-                <p>Professional beard trimming and styling.</p>
-            </div>
-
-            <div class="service">
-                <h3>Hair & Beard Combo</h3>
-                <p>Complete grooming for a fresh look.</p>
-            </div>
+    <!-- Profile & Logo -->
+    <div class="profile-section">
+        <img src="logo.jpg" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+        <div class="salon-info">
+            <h1>The Barber Cut</h1>
+            <p>✂️ Premium Hair Salon & Grooming</p>
+            <p>📍 Shop Location / Main Market</p>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p>© 2026 The Barber Cut. All Rights Reserved.</p>
-    </footer>
+    <div class="content">
+        <!-- Booking Form -->
+        <div id="booking-section" class="card">
+            <h2>Book Appointment</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label>Aapka Naam (Name)</label>
+                    <input type="text" id="custName" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="custPhone" required placeholder="10-digit number" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label>Date & Time Slot</label>
+                    <input type="datetime-local" id="slotTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Advance Payment Amount (₹)</label>
+                    <input type="number" id="advanceAmount" required min="1" max="449" placeholder="Enter advance payment">
+                </div>
 
+                <!-- QR Code Display -->
+                <div class="qr-container">
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Scan QR to Pay Advance</p>
+                    <img src="qr.jpg" alt="UPI QR Code" class="qr-img" onerror="this.src='https://via.placeholder.com/180?text=QR+Code'">
+                </div>
+
+                <div class="price-details">
+                    <div class="price-row">
+                        <span>Total Fixed Rate:</span>
+                        <span>₹449</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Remaining Due Amount:</span>
+                        <span id="dueText">₹449</span>
+                    </div>
+                    <div class="warning-text">
+                        ⚠️ Total rate ₹449 hai. Baki ki bachi hui rashi dukan par service lene ke baad deni hogi.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Confirm & Book via WhatsApp</button>
+            </form>
+        </div>
+
+        <!-- Receipt Section -->
+        <div id="receipt-section" class="card hidden">
+            <h2>Booking Receipt</h2>
+            <div class="receipt">
+                <p><strong>Booking ID:</strong> <span id="r-id"></span></p>
+                <p><strong>Name:</strong> <span id="r-name"></span></p>
+                <p><strong>Phone:</strong> <span id="r-phone"></span></p>
+                <p><strong>Date & Time:</strong> <span id="r-time"></span></p>
+                <p><strong>Status:</strong> <span id="r-status"></span></p>
+                <hr style="border-color: #333;">
+                <p><strong>Total Amount:</strong> ₹449</p>
+                <p><strong>Advance Paid:</strong> ₹<span id="r-adv"></span></p>
+                <p style="color: var(--danger);"><strong>Remaining Dues:</strong> ₹<span id="r-due"></span></p>
+                
+                <div class="warning-text" style="margin-top: 15px;">
+                    ⚠️ Kripya booked time par pahuche. Time over hone par ticket expire ho jayega.
+                </div>
+            </div>
+            <button onclick="window.location.reload()" class="btn" style="margin-top: 15px; background-color: #444; color: #fff;">New Booking</button>
+        </div>
+
+        <!-- Admin Access Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="adminLogin()" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Owner Panel</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-section" class="card hidden">
+            <h2>Owner Control Panel</h2>
+            <div id="admin-records"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Instagram Button -->
+<a href="https://instagram.com/the_barber_cut_v.s" target="_blank" class="insta-btn">
+    📸 Follow @the_barber_cut_v.s
+</a>
+
+<script>
+    const TOTAL_RATE = 449;
+    const ADMIN_PASS = "5393902291912327";
+    const OWNER_WHATSAPP = "919130346008";
+
+    // Auto calculate dues in form
+    document.getElementById('advanceAmount').addEventListener('input', function() {
+        let adv = parseFloat(this.value) || 0;
+        let due = TOTAL_RATE - adv;
+        document.getElementById('dueText').innerText = '₹' + (due < 0 ? 0 : due);
+    });
+
+    // Handle Form Submit
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let name = document.getElementById('custName').value;
+        let phone = document.getElementById('custPhone').value;
+        let slot = document.getElementById('slotTime').value;
+        let adv = parseFloat(document.getElementById('advanceAmount').value);
+        let due = TOTAL_RATE - adv;
+        let bookingId = 'TBC-' + Math.floor(1000 + Math.random() * 9000);
+
+        let bookingData = {
+            id: bookingId,
+            name: name,
+            phone: phone,
+            slot: slot,
+            adv: adv,
+            due: due,
+            completed: false
+        };
+
+        // Save locally
+        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
+        bookings.push(bookingData);
+        localStorage.setItem('tbc_bookings', JSON.stringify(bookings));
+
+        // Show Receipt
+        document.getElementById('booking-section').classList.add('hidden');
+        document.getElementById('receipt-section').classList.remove('hidden');
+
+        document.getElementById('r-id').innerText = bookingId;
+        document.getElementById('r-name').innerText = name;
+        document.getElementById('r-phone').innerText = phone;
+        document.getElementById('r-time').innerText = new Date(slot).toLocaleString();
+        document.getElementById('r-adv').innerText = adv;
+        document.getElementById('r-due').innerText = due;
+
+        let isExpired = new Date() > new Date(slot);
+        let statusElem = document.getElementById('r-status');
+        if(isExpired) {
+            statusElem.innerText = "Expired (Time Over) 🔴";
+            statusElem.className = "status-tag status-expired";
+        } else {
+            statusElem.innerText = "Active 🟢";
+            statusElem.className = "status-tag status-active";
+        }
+
+        // WhatsApp Forwarding
+        let msg = `*New Booking Request - The Barber Cut*%0A` +
+                  `*ID:* ${bookingId}%0A` +
+                  `*Name:* ${name}%0A` +
+                  `*Phone:* ${phone}%0A` +
+                  `*Slot:* ${new Date(slot).toLocaleString()}%0A` +
+                  `*Advance Paid:* ₹${adv}%0A` +
+                  `*Remaining Due:* ₹${due}`;
+        
+        window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, '_blank');
+    });
+
+    // Admin Login Functionality
+    function adminLogin() {
+        let pass = prompt("Enter Owner Password:");
+        if (pass === ADMIN_PASS) {
+            document.getElementById('booking-section').classList.add('hidden');
+            document.getElementById('receipt-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.remove('hidden');
+            loadAdminData();
+        } else if (pass) {
+            alert("Wrong Password!");
+        }
+    }
+
+    function loadAdminData() {
+        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
+        let container = document.getElementById('admin-records');
+        container.innerHTML = '';
+
+        if(bookings.length === 0) {
+            container.innerHTML = '<p>No bookings found.</p>';
+            return;
+        }
+
+        bookings.forEach((b, idx) => {
+            let isExpired = new Date() > new Date(b.slot);
+            let div = document.createElement('div');
+            div.style.borderBottom = '1px solid #444';
+            div.style.padding = '10px 0';
+
+            div.innerHTML = `
+                <p><strong>${b.name}</strong> (${b.phone})</p>
+                <p>Slot: ${new Date(b.slot).toLocaleString()}</p>
+                <p>Adv: ₹${b.adv} | Due: ₹${b.due}</p>
+                <p>Status: ${b.completed ? 'Completed 🔴' : (isExpired ? 'Expired 🔴' : 'Active 🟢')}</p>
+                ${!b.completed ? `<button onclick="markComplete(${idx})" style="padding:5px 10px; background:var(--primary); border:none; border-radius:3px; cursor:pointer;">Mark Completed 🔴</button>` : ''}
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function markComplete(index) {
+        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
+        bookings[index].completed = true;
+        localStorage.setItem('tbc_bookings', JSON.stringify(bookings));
+        loadAdminData();
+    }
+</script>
 </body>
 </html>
