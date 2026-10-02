@@ -1,437 +1,739 @@
+```html
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Barber Cut - Salon Appointment Booking</title>
+    <title>The Barber Cut - VIP Grooming & Salon App</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Library for Ticket Image Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --primary: #d4af37;
-            --bg-dark: #121212;
-            --card-bg: #1e1e1e;
-            --text-light: #f5f5f5;
-            --text-muted: #aaa;
-            --danger: #e63946;
+            --primary-gold: #d4af37;
+            --secondary-gold: #f39c12;
+            --bg-black: #0d0d0d;
+            --card-bg: #181818;
+            --input-bg: #242424;
+            --text-light: #ffffff;
+            --text-gray: #b0b0b0;
+            --danger-red: #ff4d4d;
+            --success-green: #2ecc71;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-black);
             color: var(--text-light);
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
+            padding-bottom: 90px;
         }
 
-        .container {
+        .app-container {
             width: 100%;
             max-width: 480px;
-            background-color: var(--card-bg);
+            background-color: #121212;
             min-height: 100vh;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
             position: relative;
-            padding-bottom: 80px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
         }
 
-        .banner-container {
+        /* Banner & Header Styling */
+        .banner-box {
             width: 100%;
-            height: 180px;
+            height: 200px;
+            background-color: #000;
             overflow: hidden;
             position: relative;
-            background-color: #333;
         }
 
-        .banner-img {
+        .banner-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .profile-section {
+        .profile-header {
             display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-top: -40px;
+            align-items: flex-start;
+            padding: 0 20px;
+            margin-top: -45px;
+            gap: 15px;
             position: relative;
-            z-index: 2;
+            z-index: 5;
         }
 
-        .logo-img {
-            width: 80px;
-            height: 80px;
+        .logo-dp {
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
-            border: 3px solid var(--primary);
+            border: 3px solid var(--primary-gold);
             object-fit: cover;
             background-color: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.9);
+            flex-shrink: 0;
         }
 
-        .salon-info {
-            margin-left: 15px;
-            margin-top: 30px;
+        .shop-title h1 {
+            font-size: 1.35rem;
+            color: var(--primary-gold);
+            letter-spacing: 0.5px;
         }
 
-        .salon-info h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            color: var(--primary);
+        .shop-title p.proprietor {
+            font-size: 0.82rem;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
-        .salon-info p {
-            margin: 3px 0;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        /* Detailed Location Address Box */
+        .shop-location-badge {
+            background-color: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--primary-gold);
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 4px;
         }
 
-        .content {
-            padding: 15px;
+        .shop-location-badge p {
+            font-size: 0.78rem;
+            color: #e0e0e0;
+            line-height: 1.3;
         }
 
+        /* Action Buttons */
+        .action-links {
+            display: flex;
+            gap: 10px;
+            margin: 15px 20px;
+        }
+
+        .btn-insta {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(220, 39, 67, 0.25);
+        }
+
+        .btn-map {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+        }
+
+        .main-content {
+            padding: 0 20px 20px;
+        }
+
+        /* Cards & Form Layouts */
         .card {
-            background-color: #2a2a2a;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
+            background-color: var(--card-bg);
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
         }
 
-        .card h2 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            border-bottom: 1px solid #444;
+        .card-header {
+            font-size: 1rem;
+            color: var(--primary-gold);
+            border-bottom: 1px solid #2a2a2a;
             padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
+            font-size: 0.82rem;
+            color: var(--text-gray);
             margin-bottom: 5px;
-            font-size: 0.9rem;
         }
 
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #1a1a1a;
-            color: #fff;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: #000;
-            border: none;
             padding: 12px;
-            width: 100%;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .qr-container {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .qr-img {
-            width: 180px;
-            height: 180px;
-            border: 2px solid var(--primary);
             border-radius: 8px;
+            border: 1px solid #333;
+            background-color: var(--input-bg);
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
         }
 
-        .price-details {
-            background-color: #222;
-            padding: 10px;
-            border-radius: 5px;
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-gold);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Conditional Step 2 QR Container */
+        .qr-card-box {
+            background-color: #202020;
+            border: 1px dashed var(--primary-gold);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
             margin-bottom: 15px;
         }
 
-        .price-row {
+        .qr-card-box img {
+            width: 180px;
+            height: 180px;
+            border-radius: 8px;
+            border: 2px solid #fff;
+            margin: 10px 0;
+        }
+
+        /* VIP Metallic Ticket Card */
+        .ticket-card {
+            background: linear-gradient(135deg, #1f1c18, #0d0d0d);
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+        }
+
+        .ticket-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-
-        .warning-text {
-            color: var(--danger);
-            font-size: 0.8rem;
-            margin-top: 8px;
-        }
-
-        .insta-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            z-index: 100;
-            display: flex;
             align-items: center;
-            gap: 5px;
+            border-bottom: 1px dashed #555;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .receipt {
-            border: 1px dashed var(--primary);
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #181818;
+        .ticket-id {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-gold);
         }
 
-        .hidden {
-            display: none;
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
-        .status-tag {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+        .bg-active { background-color: rgba(46, 204, 113, 0.2); color: var(--success-green); border: 1px solid var(--success-green); }
+        .bg-expired { background-color: rgba(255, 77, 77, 0.2); color: var(--danger-red); border: 1px solid var(--danger-red); }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .ticket-row span:first-child { color: var(--text-gray); }
+        .ticket-row span:last-child { font-weight: 600; text-align: right; }
+
+        .dues-box-alert {
+            background-color: rgba(255, 77, 77, 0.15);
+            border-left: 4px solid var(--danger-red);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 12px;
+        }
+
+        .dues-amount {
+            color: var(--danger-red);
+            font-size: 1.1rem;
             font-weight: bold;
         }
 
-        .status-active { background-color: #2e7d32; color: white; }
-        .status-expired { background-color: #c62828; color: white; }
+        .warning-notice {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 3px solid var(--secondary-gold);
+            padding: 8px;
+            font-size: 0.78rem;
+            color: #f1c40f;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .history-item {
+            background-color: #202020;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary-gold);
+            font-size: 0.83rem;
+        }
+
+        .admin-stat-card {
+            background: #222;
+            border: 1px solid var(--primary-gold);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Banner Image -->
-    <div class="banner-container">
-        <img src="banner.png" alt="Salon Banner" class="banner-img" onerror="this.src='https://via.placeholder.com/480x180?text=The+Barber+Cut'">
+<div class="app-container">
+    <!-- Banner Header Image -->
+    <div class="banner-box">
+        <img src="banner.png" alt="Banner" onerror="this.src='https://via.placeholder.com/480x200?text=The+Barber+Cut'">
     </div>
 
-    <!-- Profile & Logo -->
-    <div class="profile-section">
-        <img src="logo.jpg" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
-        <div class="salon-info">
+    <!-- Profile DP & Detailed Shop Address Header -->
+    <div class="profile-header">
+        <img src="logo.jpg" alt="Logo" class="logo-dp" onerror="this.src='https://via.placeholder.com/85?text=Logo'">
+        <div class="shop-title">
             <h1>The Barber Cut</h1>
-            <p>✂️ Premium Hair Salon & Grooming</p>
-            <p>📍 Shop Location / Main Market</p>
+            <p class="proprietor"><i class="fa-solid fa-scissors"></i> Prop. Vikash Sharma</p>
+            
+            <!-- Explicit Full Location Text Box -->
+            <div class="shop-location-badge">
+                <p><i class="fa-solid fa-location-dot" style="color:var(--primary-gold);"></i> <strong>Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)</strong></p>
+            </div>
         </div>
     </div>
 
-    <div class="content">
-        <!-- Booking Form -->
-        <div id="booking-section" class="card">
-            <h2>Book Appointment</h2>
-            <form id="bookingForm">
-                <div class="form-group">
-                    <label>Aapka Naam (Name)</label>
-                    <input type="text" id="custName" required placeholder="Enter your name">
-                </div>
-                <div class="form-group">
-                    <label>Mobile Number</label>
-                    <input type="tel" id="custPhone" required placeholder="10-digit number" pattern="[0-9]{10}">
-                </div>
-                <div class="form-group">
-                    <label>Date & Time Slot</label>
-                    <input type="datetime-local" id="slotTime" required>
-                </div>
-                <div class="form-group">
-                    <label>Advance Payment Amount (₹)</label>
-                    <input type="number" id="advanceAmount" required min="1" max="449" placeholder="Enter advance payment">
-                </div>
+    <!-- Quick Action Links -->
+    <div class="action-links">
+        <a href="https://www.instagram.com/the_barber_cut_v.s" target="_blank" class="btn-insta">
+            <i class="fa-brands fa-instagram"></i> Instagram
+        </a>
+        <a href="https://maps.google.com/?q=Maa+Chamunda+Mandir+Surhari+More+Bypass+Road+Manpur+Gaya+Bihar" target="_blank" class="btn-map">
+            <i class="fa-solid fa-map-location-dot"></i> Google Maps
+        </a>
+    </div>
 
-                <!-- QR Code Display -->
-                <div class="qr-container">
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Scan QR to Pay Advance</p>
-                    <img src="qr.jpg" alt="UPI QR Code" class="qr-img" onerror="this.src='https://via.placeholder.com/180?text=QR+Code'">
-                </div>
+    <div class="main-content">
 
-                <div class="price-details">
-                    <div class="price-row">
-                        <span>Total Fixed Rate:</span>
-                        <span>₹449</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Remaining Due Amount:</span>
-                        <span id="dueText">₹449</span>
-                    </div>
-                    <div class="warning-text">
-                        ⚠️ Total rate ₹449 hai. Baki ki bachi hui rashi dukan par service lene ke baad deni hogi.
-                    </div>
+        <!-- STEP 1: CUSTOMER DETAILS FORM -->
+        <div id="step1-card" class="card">
+            <div class="card-header"><i class="fa-solid fa-user-pen"></i> Step 1: Customer Details</div>
+            <form id="detailsForm" onsubmit="goToPaymentStep(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="cName" required placeholder="Apna pura naam likhein">
                 </div>
-
-                <button type="submit" class="btn">Confirm & Book via WhatsApp</button>
+                <div class="form-group">
+                    <label>Mobile / WhatsApp Number *</label>
+                    <input type="tel" id="cPhone" required placeholder="10-digit phone number" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label>Full Address *</label>
+                    <textarea id="cAddress" rows="2" required placeholder="Village / Locality / Landmark address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Select Service (Fixed Rate ₹449) *</label>
+                    <select id="cService" required>
+                        <option value="Hair Cut & Grooming Combo (₹449)">Hair Cut & Grooming Combo (₹449)</option>
+                        <option value="Special Beard Styling (₹449)">Special Beard Styling (₹449)</option>
+                        <option value="Full Salon VIP Package (₹449)">Full Salon VIP Package (₹449)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time Slot *</label>
+                    <input type="datetime-local" id="cSlot" required>
+                </div>
+                <button type="submit" class="btn-primary">Proceed to Payment & QR Code ➡️</button>
             </form>
         </div>
 
-        <!-- Receipt Section -->
-        <div id="receipt-section" class="card hidden">
-            <h2>Booking Receipt</h2>
-            <div class="receipt">
-                <p><strong>Booking ID:</strong> <span id="r-id"></span></p>
-                <p><strong>Name:</strong> <span id="r-name"></span></p>
-                <p><strong>Phone:</strong> <span id="r-phone"></span></p>
-                <p><strong>Date & Time:</strong> <span id="r-time"></span></p>
-                <p><strong>Status:</strong> <span id="r-status"></span></p>
-                <hr style="border-color: #333;">
-                <p><strong>Total Amount:</strong> ₹449</p>
-                <p><strong>Advance Paid:</strong> ₹<span id="r-adv"></span></p>
-                <p style="color: var(--danger);"><strong>Remaining Dues:</strong> ₹<span id="r-due"></span></p>
-                
-                <div class="warning-text" style="margin-top: 15px;">
-                    ⚠️ Kripya booked time par pahuche. Time over hone par ticket expire ho jayega.
-                </div>
+        <!-- STEP 2: CONDITIONAL UPI QR & UTR VERIFICATION -->
+        <div id="step2-card" class="card hidden">
+            <div class="card-header"><i class="fa-solid fa-qrcode"></i> Step 2: Pay Advance & Confirm</div>
+            
+            <div class="qr-card-box">
+                <p style="color:var(--primary-gold); font-weight:bold; font-size:0.9rem;">Pay via Paytm / PhonePe / GPay</p>
+                <p style="font-size:0.75rem; color:var(--text-gray);">Scan QR code to pay advance amount</p>
+                <img src="qr.jpg" alt="UPI QR Code" onerror="this.src='https://via.placeholder.com/180?text=Scan+Paytm+QR'">
+                <p style="font-size:0.8rem; color:#fff; font-weight:bold;">UPI ID: 9130346008@pthdfc</p>
             </div>
-            <button onclick="window.location.reload()" class="btn" style="margin-top: 15px; background-color: #444; color: #fff;">New Booking</button>
+
+            <form id="paymentForm" onsubmit="generateFinalReceipt(event)">
+                <div class="form-group">
+                    <label>Advance Payment Amount (₹) *</label>
+                    <input type="number" id="cPaid" required min="1" max="449" placeholder="Kitna advance pay kiya (e.g. 200, 250, 449)">
+                </div>
+                <div class="form-group">
+                    <label>12-Digit Payment UTR / Transaction ID *</label>
+                    <input type="text" id="cUtr" required maxlength="12" minlength="12" placeholder="12-digit UPI UTR number">
+                </div>
+
+                <button type="submit" class="btn-primary">🎟️ Confirm Payment & Get VIP Pass</button>
+                <button type="button" onclick="goBackToStep1()" style="width:100%; background:none; border:none; color:var(--text-gray); margin-top:10px; cursor:pointer; font-size:0.8rem;">⬅️ Edit Details</button>
+            </form>
         </div>
 
-        <!-- Admin Access Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="adminLogin()" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Owner Panel</button>
+        <!-- GOLDEN VIP PASS RECEIPT SECTION -->
+        <div id="receipt-card-section" class="card hidden">
+            <div class="card-header"><i class="fa-solid fa-ticket"></i> Digital VIP Ticket Pass</div>
+            <div class="ticket-card" id="ticketPassContent"></div>
+            
+            <button onclick="downloadPassAsImage()" class="btn-primary" style="margin-top:15px; background:linear-gradient(45deg, #27ae60, #2ecc71); color:#fff;">📸 Download Pass Image for WhatsApp</button>
+            <button onclick="resetBookingFlow()" class="btn-primary" style="margin-top:10px; background:#333; color:#fff;">Make Another Booking</button>
         </div>
 
-        <!-- Admin Panel -->
-        <div id="admin-section" class="card hidden">
-            <h2>Owner Control Panel</h2>
-            <div id="admin-records"></div>
+        <!-- MY BOOKING HISTORY -->
+        <div class="card">
+            <div class="card-header"><i class="fa-solid fa-clock-rotate-left"></i> My Booking History</div>
+            <div id="historyList">
+                <p style="font-size:0.8rem; color:var(--text-gray);">Is device par pehle ki koi booking nahi mili.</p>
+            </div>
         </div>
+
+        <!-- OWNER / ADMIN CONTROL PANEL -->
+        <div style="text-align:center; margin-top:30px;">
+            <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#555; text-decoration:underline; font-size:0.8rem; cursor:pointer;">Owner Control Panel</button>
+        </div>
+
+        <div id="adminPanel" class="card hidden" style="margin-top:15px; border-color:var(--primary-gold);">
+            <div class="card-header"><i class="fa-solid fa-user-shield"></i> Owner Master Verification Panel</div>
+            <div id="adminAuth">
+                <input type="password" id="adminPassInput" placeholder="Enter Owner Password" style="width:100%; padding:10px; border-radius:6px; background:#222; border:1px solid #444; color:#fff; margin-bottom:10px;">
+                <button class="btn-primary" onclick="loginAdmin()">Login to Master Bookings</button>
+            </div>
+            <div id="adminDataList" class="hidden"></div>
+        </div>
+
     </div>
 </div>
 
-<!-- Floating Instagram Button -->
-<a href="https://instagram.com/the_barber_cut_v.s" target="_blank" class="insta-btn">
-    📸 Follow @the_barber_cut_v.s
-</a>
-
 <script>
-    const TOTAL_RATE = 449;
+    const TOTAL_PRICE = 449;
     const ADMIN_PASS = "5393902291912327";
     const OWNER_WHATSAPP = "919130346008";
+    const SHOP_EXPLICIT_ADDRESS = "Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)";
 
-    // Auto calculate dues in form
-    document.getElementById('advanceAmount').addEventListener('input', function() {
-        let adv = parseFloat(this.value) || 0;
-        let due = TOTAL_RATE - adv;
-        document.getElementById('dueText').innerText = '₹' + (due < 0 ? 0 : due);
-    });
+    let tempCustomerData = {};
 
-    // Handle Form Submit
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    window.onload = function() {
+        renderHistory();
+    };
 
-        let name = document.getElementById('custName').value;
-        let phone = document.getElementById('custPhone').value;
-        let slot = document.getElementById('slotTime').value;
-        let adv = parseFloat(document.getElementById('advanceAmount').value);
-        let due = TOTAL_RATE - adv;
-        let bookingId = 'TBC-' + Math.floor(1000 + Math.random() * 9000);
-
-        let bookingData = {
-            id: bookingId,
-            name: name,
-            phone: phone,
-            slot: slot,
-            adv: adv,
-            due: due,
-            completed: false
-        };
-
-        // Save locally
-        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
-        bookings.push(bookingData);
-        localStorage.setItem('tbc_bookings', JSON.stringify(bookings));
-
-        // Show Receipt
-        document.getElementById('booking-section').classList.add('hidden');
-        document.getElementById('receipt-section').classList.remove('hidden');
-
-        document.getElementById('r-id').innerText = bookingId;
-        document.getElementById('r-name').innerText = name;
-        document.getElementById('r-phone').innerText = phone;
-        document.getElementById('r-time').innerText = new Date(slot).toLocaleString();
-        document.getElementById('r-adv').innerText = adv;
-        document.getElementById('r-due').innerText = due;
-
-        let isExpired = new Date() > new Date(slot);
-        let statusElem = document.getElementById('r-status');
-        if(isExpired) {
-            statusElem.innerText = "Expired (Time Over) 🔴";
-            statusElem.className = "status-tag status-expired";
-        } else {
-            statusElem.innerText = "Active 🟢";
-            statusElem.className = "status-tag status-active";
-        }
-
-        // WhatsApp Forwarding
-        let msg = `*New Booking Request - The Barber Cut*%0A` +
-                  `*ID:* ${bookingId}%0A` +
-                  `*Name:* ${name}%0A` +
-                  `*Phone:* ${phone}%0A` +
-                  `*Slot:* ${new Date(slot).toLocaleString()}%0A` +
-                  `*Advance Paid:* ₹${adv}%0A` +
-                  `*Remaining Due:* ₹${due}`;
-        
-        window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, '_blank');
-    });
-
-    // Admin Login Functionality
-    function adminLogin() {
-        let pass = prompt("Enter Owner Password:");
-        if (pass === ADMIN_PASS) {
-            document.getElementById('booking-section').classList.add('hidden');
-            document.getElementById('receipt-section').classList.add('hidden');
-            document.getElementById('admin-section').classList.remove('hidden');
-            loadAdminData();
-        } else if (pass) {
-            alert("Wrong Password!");
-        }
+    function getNextBookingId() {
+        let currentSeq = parseInt(localStorage.getItem("barber_booking_seq") || "0");
+        let nextSeq = currentSeq + 1;
+        localStorage.setItem("barber_booking_seq", nextSeq.toString());
+        return "#TBC-" + nextSeq.toString().padStart(4, '0');
     }
 
-    function loadAdminData() {
-        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
-        let container = document.getElementById('admin-records');
-        container.innerHTML = '';
+    function goToPaymentStep(e) {
+        e.preventDefault();
+        tempCustomerData = {
+            name: document.getElementById("cName").value,
+            phone: document.getElementById("cPhone").value,
+            address: document.getElementById("cAddress").value,
+            service: document.getElementById("cService").value,
+            slotTime: document.getElementById("cSlot").value
+        };
 
-        if(bookings.length === 0) {
-            container.innerHTML = '<p>No bookings found.</p>';
-            return;
-        }
+        document.getElementById("step1-card").classList.add("hidden");
+        document.getElementById("step2-card").classList.remove("hidden");
+        window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
 
-        bookings.forEach((b, idx) => {
-            let isExpired = new Date() > new Date(b.slot);
-            let div = document.createElement('div');
-            div.style.borderBottom = '1px solid #444';
-            div.style.padding = '10px 0';
+    function goBackToStep1() {
+        document.getElementById("step2-card").classList.add("hidden");
+        document.getElementById("step1-card").classList.remove("hidden");
+    }
 
-            div.innerHTML = `
-                <p><strong>${b.name}</strong> (${b.phone})</p>
-                <p>Slot: ${new Date(b.slot).toLocaleString()}</p>
-                <p>Adv: ₹${b.adv} | Due: ₹${b.due}</p>
-                <p>Status: ${b.completed ? 'Completed 🔴' : (isExpired ? 'Expired 🔴' : 'Active 🟢')}</p>
-                ${!b.completed ? `<button onclick="markComplete(${idx})" style="padding:5px 10px; background:var(--primary); border:none; border-radius:3px; cursor:pointer;">Mark Completed 🔴</button>` : ''}
-            `;
-            container.appendChild(div);
+    function generateFinalReceipt(e) {
+        e.preventDefault();
+
+        let paid = parseFloat(document.getElementById("cPaid").value);
+        let utr = document.getElementById("cUtr").value;
+        let dues = TOTAL_PRICE - paid;
+        if(dues < 0) dues = 0;
+
+        let bookingId = getNextBookingId();
+
+        let finalBooking = {
+            id: bookingId,
+            name: tempCustomerData.name,
+            phone: tempCustomerData.phone,
+            address: tempCustomerData.address,
+            service: tempCustomerData.service,
+            slotTime: tempCustomerData.slotTime,
+            totalPrice: TOTAL_PRICE,
+            paidAmount: paid,
+            duesAmount: dues,
+            utr: utr,
+            completed: false,
+            createdAt: new Date().toISOString()
+        };
+
+        let myHistory = JSON.parse(localStorage.getItem("my_barber_bookings") || "[]");
+        myHistory.unshift(finalBooking);
+        localStorage.setItem("my_barber_bookings", JSON.stringify(myHistory));
+
+        let masterRecords = JSON.parse(localStorage.getItem("master_barber_bookings") || "[]");
+        masterRecords.unshift(finalBooking);
+        localStorage.setItem("master_barber_bookings", JSON.stringify(masterRecords));
+
+        renderTicketPassCard(finalBooking);
+        renderHistory();
+
+        let formattedSlot = new Date(finalBooking.slotTime).toLocaleString();
+        
+        let msg = `*VIP DIGITAL PASS - THE BARBER CUT*%0A` +
+                  `*Ticket ID:* ${finalBooking.id}%0A` +
+                  `*Status:* ACTIVE PASS%0A%0A` +
+                  `💈 *SHOP ADDRESS:* ${SHOP_EXPLICIT_ADDRESS}%0A%0A` +
+                  `👤 *CUSTOMER DETAILS*%0A` +
+                  `*Name:* ${finalBooking.name}%0A` +
+                  `*Phone:* ${finalBooking.phone}%0A` +
+                  `*Address:* ${finalBooking.address}%0A%0A` +
+                  `💈 *BOOKING DETAILS*%0A` +
+                  `*Service:* ${finalBooking.service}%0A` +
+                  `*Slot Time:* ${formattedSlot}%0A%0A` +
+                  `💳 *PAYMENT BREAKDOWN*%0A` +
+                  `*Total Amount:* ₹${TOTAL_PRICE}%0A` +
+                  `*Advance Paid:* ₹${paid} (SUCCESS)%0A` +
+                  `*Dues Payable:* ₹${dues} (AT SHOP)%0A` +
+                  `*UTR ID:* ${utr}%0A%0A` +
+                  `📌 *NOTICE:* Remaining balance of ₹${dues} must be paid at the salon during service.`;
+
+        window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, '_blank');
+
+        document.getElementById("step2-card").classList.add("hidden");
+        document.getElementById("receipt-card-section").classList.remove("hidden");
+    }
+
+    function downloadPassAsImage() {
+        let cardElement = document.getElementById("ticketPassContent");
+        html2canvas(cardElement).then(canvas => {
+            let link = document.createElement("a");
+            link.download = "BarberCut_VIP_Pass.png";
+            link.href = canvas.toDataURL();
+            link.click();
         });
     }
 
-    function markComplete(index) {
-        let bookings = JSON.parse(localStorage.getItem('tbc_bookings') || '[]');
-        bookings[index].completed = true;
-        localStorage.setItem('tbc_bookings', JSON.stringify(bookings));
-        loadAdminData();
+    function isExpiredSlot(slotStr) {
+        return new Date() > new Date(slotStr);
+    }
+
+    function renderTicketPassCard(data) {
+        let isExpired = isExpiredSlot(data.slotTime);
+        let statusBadge = data.completed ? 
+            `<span class="badge-status bg-expired">Completed 🔴</span>` : 
+            (isExpired ? `<span class="badge-status bg-expired">Expired 🔴</span>` : `<span class="badge-status bg-active">Active 🟢</span>`);
+
+        let html = `
+            <div class="ticket-header">
+                <div>
+                    <span style="font-size:0.75rem; color:var(--text-gray);">VIP TICKET ID</span><br>
+                    <span class="ticket-id">${data.id}</span>
+                </div>
+                <div>${statusBadge}</div>
+            </div>
+            <div class="ticket-row"><span>Shop Location:</span> <span style="color:var(--primary-gold); font-size:0.78rem;">${SHOP_EXPLICIT_ADDRESS}</span></div>
+            <div class="ticket-row"><span>Customer Name:</span> <span>${data.name}</span></div>
+            <div class="ticket-row"><span>Mobile:</span> <span>${data.phone}</span></div>
+            <div class="ticket-row"><span>Address:</span> <span>${data.address}</span></div>
+            <div class="ticket-row"><span>Service:</span> <span>${data.service}</span></div>
+            <div class="ticket-row"><span>Booked Slot:</span> <span>${new Date(data.slotTime).toLocaleString()}</span></div>
+            <div class="ticket-row"><span>UTR Number:</span> <span>${data.utr}</span></div>
+            <hr style="border-color:#333; margin:10px 0;">
+            <div class="ticket-row"><span>Total Fixed Rate:</span> <span>₹${TOTAL_PRICE}</span></div>
+            <div class="ticket-row"><span>Advance Paid:</span> <span style="color:var(--success-green);">₹${data.paidAmount}</span></div>
+            
+            <div class="dues-box-alert">
+                <div class="ticket-row" style="margin:0;">
+                    <span style="color:#fff; font-weight:bold;">Remaining Dues:</span>
+                    <span class="dues-amount">₹${data.duesAmount} DUES</span>
+                </div>
+            </div>
+
+            <div class="warning-notice">
+                📌 <strong>NOTICE:</strong> Service time shop par bachi hui rashid ₹${data.duesAmount} full payment karna aniwarya hai. Booked time par dukan aayein.
+            </div>
+        `;
+
+        document.getElementById("ticketPassContent").innerHTML = html;
+    }
+
+    function renderHistory() {
+        let listDiv = document.getElementById("historyList");
+        let history = JSON.parse(localStorage.getItem("my_barber_bookings") || "[]");
+
+        if(history.length === 0) {
+            listDiv.innerHTML = `<p style="font-size:0.8rem; color:var(--text-gray);">Is device par pehle ki koi booking nahi mili.</p>`;
+            return;
+        }
+
+        let html = "";
+        history.forEach(item => {
+            let isExpired = isExpiredSlot(item.slotTime);
+            let statusStr = item.completed ? "Completed 🔴" : (isExpired ? "Expired 🔴" : "Active 🟢");
+
+            html += `
+                <div class="history-item">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong style="color:var(--primary-gold);">${item.id}</strong>
+                        <span>${statusStr}</span>
+                    </div>
+                    <div>${item.service}</div>
+                    <small style="color:var(--text-gray);">${new Date(item.slotTime).toLocaleString()}</small><br>
+                    <small>Paid: ₹${item.paidAmount} | <strong style="color:var(--danger-red);">Dues: ₹${item.duesAmount}</strong></small>
+                </div>
+            `;
+        });
+        listDiv.innerHTML = html;
+    }
+
+    function resetBookingFlow() {
+        document.getElementById("receipt-card-section").classList.add("hidden");
+        document.getElementById("step1-card").classList.remove("hidden");
+        document.getElementById("detailsForm").reset();
+        document.getElementById("paymentForm").reset();
+    }
+
+    function toggleAdminPanel() {
+        let p = document.getElementById("adminPanel");
+        p.classList.toggle("hidden");
+    }
+
+    function loginAdmin() {
+        let val = document.getElementById("adminPassInput").value;
+        if(val === ADMIN_PASS) {
+            document.getElementById("adminAuth").classList.add("hidden");
+            document.getElementById("adminDataList").classList.remove("hidden");
+            renderAdminMasterData();
+        } else {
+            alert("Wrong Admin Password!");
+        }
+    }
+
+    function renderAdminMasterData() {
+        let records = JSON.parse(localStorage.getItem("master_barber_bookings") || "[]");
+        let div = document.getElementById("adminDataList");
+
+        if(records.length === 0) {
+            div.innerHTML = "<p style='color:var(--text-gray); font-size:0.85rem;'>No bookings recorded yet.</p>";
+            return;
+        }
+
+        let totalAdv = records.reduce((sum, item) => sum + item.paidAmount, 0);
+        let completedCount = records.filter(item => item.completed).length;
+
+        let html = `
+            <div class="admin-stat-card">
+                <span style="color:var(--primary-gold); font-weight:bold;">Total Revenue Collected: ₹${totalAdv}</span><br>
+                <small>Total Bookings: ${records.length} | Completed: ${completedCount}</small>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+                <input type="text" id="adminSearchKey" onkeyup="filterAdminRecords()" placeholder="🔍 Search Ticket ID (#TBC-0001) or Phone">
+            </div>
+
+            <div id="adminRecordContainer"></div>
+        `;
+
+        div.innerHTML = html;
+        renderFilteredRecords(records);
+    }
+
+    function renderFilteredRecords(records) {
+        let container = document.getElementById("adminRecordContainer");
+        let html = "";
+
+        records.forEach((item, index) => {
+            let isExpired = isExpiredSlot(item.slotTime);
+            let status = item.completed ? "Completed 🔴" : (isExpired ? "Expired 🔴" : "Active 🟢");
+
+            html += `
+                <div class="history-item">
+                    <strong style="color:var(--primary-gold);">${item.id}</strong> | ${item.name} (${item.phone})<br>
+                    <small>Address: ${item.address}</small><br>
+                    <small>Slot: ${new Date(item.slotTime).toLocaleString()}</small><br>
+                    <small>UTR: ${item.utr} | Paid: ₹${item.paidAmount} | Dues: ₹${item.duesAmount}</small><br>
+                    Status: <strong>${status}</strong><br>
+                    ${!item.completed ? `<button onclick="markRecordCompleted('${item.id}')" style="margin-top:6px; padding:4px 8px; background:var(--danger-red); border:none; color:#fff; border-radius:4px; font-weight:bold; cursor:pointer;">Mark Ticket Completed 🔴</button>` : ''}
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function filterAdminRecords() {
+        let query = document.getElementById("adminSearchKey").value.toLowerCase();
+        let master = JSON.parse(localStorage.getItem("master_barber_bookings") || "[]");
+        let filtered = master.filter(item => 
+            item.id.toLowerCase().includes(query) || item.phone.includes(query) || item.name.toLowerCase().includes(query)
+        );
+        renderFilteredRecords(filtered);
+    }
+
+    function markRecordCompleted(bookingId) {
+        let master = JSON.parse(localStorage.getItem("master_barber_bookings") || "[]");
+        let target = master.find(h => h.id === bookingId);
+        if(target) target.completed = true;
+        localStorage.setItem("master_barber_bookings", JSON.stringify(master));
+
+        let myHist = JSON.parse(localStorage.getItem("my_barber_bookings") || "[]");
+        let localTarget = myHist.find(h => h.id === bookingId);
+        if(localTarget) localTarget.completed = true;
+        localStorage.setItem("my_barber_bookings", JSON.stringify(myHist));
+
+        renderAdminMasterData();
+        renderHistory();
+        alert("Ticket " + bookingId + " has been verified & completed!");
     }
 </script>
+
 </body>
-</html>
+</html>```
