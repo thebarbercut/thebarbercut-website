@@ -50,7 +50,7 @@
       position: relative;
     }
 
-    /* Ultra Pro Max Gold Header Banner */
+    /* Header Banner & Logo */
     .header-banner {
       width: 100%;
       height: 150px;
@@ -172,7 +172,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Fixed Pricing Highlight Badge */
     .price-tag-box {
       background: linear-gradient(135deg, #f59e0b, #b45309);
       color: #030712;
@@ -264,7 +263,7 @@
       background: #374151;
     }
 
-    /* Action Buttons with Fast Trigger */
+    /* Buttons */
     .btn-submit {
       width: 100%;
       padding: 14px;
@@ -353,7 +352,7 @@
       max-width: 60%;
     }
 
-    /* Warning Notice Box for Dues & Expiry */
+    /* Status Boxes */
     .dues-warning-box {
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid #ef4444;
@@ -401,7 +400,7 @@
       margin-top: 10px;
     }
 
-    /* History & Admin Panel Item Styling */
+    /* History & Admin Items */
     .history-item {
       background: #030712;
       padding: 12px;
@@ -422,7 +421,7 @@
     .badge-expired { background: #dc2626; color: #fff; }
     .badge-completed { background: #3b82f6; color: #fff; }
 
-    /* Support Card */
+    /* Support Card & Footer */
     .support-card {
       background: linear-gradient(135deg, #111827, #030712);
       border: 1px solid #3b82f6;
@@ -433,7 +432,6 @@
       font-size: 12px;
     }
 
-    /* Footer */
     .footer {
       text-align: center;
       padding: 18px;
@@ -456,7 +454,7 @@
 
 <div class="app-container">
 
-  <!-- Shop Header Banner & Logo DP -->
+  <!-- Shop Header Banner & Logo -->
   <img src="./banner.png" alt="Shop Banner" class="header-banner" onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800'" />
   
   <div class="shop-header">
@@ -635,7 +633,6 @@
         <span class="pass-value" id="pass-dues" style="color: #f87171;">₹0</span>
       </div>
 
-      <!-- Dues & Expiry Warning Notice Box -->
       <div id="status-notice-container"></div>
 
       <div style="margin-top: 18px; text-align: center;">
@@ -666,449 +663,4 @@
     <div class="card" style="margin-top: 20px;">
       <div class="card-title">
         <i class="fa-solid fa-clock-rotate-left"></i> My Booking History & Pass Status
-      </div>
-      <div id="booking-history-list">
-        <p style="font-size: 12px; color: #6b7280;">No previous bookings found on this device.</p>
-      </div>
-    </div>
-
-    <!-- Owner Admin Verification Panel -->
-    <div class="card" id="admin-panel" style="display: none;">
-      <div class="card-title" style="color: #ef4444;">
-        <i class="fa-solid fa-shield-halved"></i> Owner Admin Master Verification Panel
-      </div>
-      <div class="form-group">
-        <input type="text" id="admin-search" class="form-control" placeholder="Search by Ticket ID (#TBC-0001), Security Code, UTR or Phone..." onkeyup="renderAdminBookings()" />
-      </div>
-      <div id="admin-bookings-list"></div>
-    </div>
-
-  </div>
-
-  <!-- App Footer -->
-  <div class="footer">
-    © THE BARBER CUT - Prop. Vikash Sharma<br>
-    Maa Chamunda Mandir, Manpur, Gaya (Bihar)<br>
-    <span class="admin-link" onclick="openAdminPanel()">Owner Admin Portal Login</span>
-  </div>
-
-</div>
-
-<script>
-  // Global Database Keys & Constants
-  const LOCAL_STORAGE_KEY = 'tbc_master_bookings_db_v3';
-  const ACTIVE_SESSION_KEY = 'tbc_active_session_v3';
-  const MASTER_PASSWORD = '5393902291912327';
-  const TOTAL_FIXED_PRICE = 449;
-
-  let currentBookingData = null;
-  let screenshotBase64 = null;
-
-  // Strict Touch Event Listeners to Lock Multi-Touch Pinch & Double-Tap Zoom
-  document.addEventListener('touchstart', function(event) {
-    if (event.touches.length > 1) {
-      event.preventDefault(); // Prevent pinch zoom
-    }
-  }, { passive: false });
-
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function(event) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-      event.preventDefault(); // Prevent double-tap zoom
-    }
-    lastTouchEnd = now;
-  }, false);
-
-  // Copy Direct Payment Phone Number
-  function copyUPI() {
-    const tempInput = document.createElement('input');
-    tempInput.value = '9130346008';
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    alert("✅ Direct Payment Number (9130346008) copied to clipboard!");
-  }
-
-  // Thursday Closure Validation Rule
-  function validateBookingDate() {
-    const dateInput = document.getElementById('cust-date').value;
-    if (!dateInput) return;
-
-    const selectedDate = new Date(dateInput);
-    const dayOfWeek = selectedDate.getUTCDay(); // 4 = Thursday
-
-    if (dayOfWeek === 4) {
-      alert("🚨 SHOP CLOSED ON THURSDAYS!\n\nPlease select another date. THE BARBER CUT remains closed on Thursdays.");
-      document.getElementById('cust-date').value = '';
-    }
-  }
-
-  // Toggle Advance Payment Field
-  function toggleAdvanceInput() {
-    const mode = document.getElementById('payment-mode').value;
-    const advanceGroup = document.getElementById('advance-group');
-    if (mode === 'Advance') {
-      advanceGroup.style.display = 'block';
-    } else {
-      advanceGroup.style.display = 'none';
-      document.getElementById('cust-advance').value = '';
-      document.getElementById('dues-live-hint').innerText = '';
-    }
-  }
-
-  // Live Dues Calculation
-  function calculateDuesOnFly() {
-    const advanceVal = parseFloat(document.getElementById('cust-advance').value) || 0;
-    const hintElem = document.getElementById('dues-live-hint');
-    if (advanceVal > 448) {
-      hintElem.innerHTML = `<span style="color:#ef4444;">❌ Advance cannot exceed ₹448! For full payment, select Full Payment mode.</span>`;
-    } else if (advanceVal >= 1) {
-      const dues = TOTAL_FIXED_PRICE - advanceVal;
-      hintElem.innerText = `Remaining Dues to pay at salon: ₹${dues}`;
-    } else {
-      hintElem.innerText = '';
-    }
-  }
-
-  // Read Uploaded Payment Screenshot
-  function previewScreenshot(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        screenshotBase64 = e.target.result;
-        const preview = document.getElementById('ss-preview');
-        preview.src = screenshotBase64;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // Generate Secret Random Verification Code
-  function generateSecurityCode() {
-    const randomNum = Math.floor(100000 + Math.random() * 900000);
-    return `TBC-${randomNum}`;
-  }
-
-  // Generate VIP Pass Logic
-  function generateVIPPass() {
-    const name = document.getElementById('cust-name').value.trim();
-    const phone = document.getElementById('cust-phone').value.trim();
-    const address = document.getElementById('cust-address').value.trim();
-    const service = document.getElementById('cust-service').value.trim();
-    const date = document.getElementById('cust-date').value;
-    const time = document.getElementById('cust-time').value;
-    const mode = document.getElementById('payment-mode').value;
-    const advanceInput = document.getElementById('cust-advance').value.trim();
-    const utr = document.getElementById('cust-utr').value.trim();
-
-    // Field Validations
-    if (!name || !phone || !address || !service || !date || !time || !utr || !screenshotBase64) {
-      alert("❌ Please fill in all required fields and upload the payment screenshot!");
-      return;
-    }
-
-    if (phone.length !== 10 || isNaN(phone)) {
-      alert("❌ Please enter a valid 10-Digit Mobile Number!");
-      return;
-    }
-
-    if (utr.length < 8) {
-      alert("❌ Please enter a valid 12-Digit UTR Transaction Number!");
-      return;
-    }
-
-    // Strict Advance Calculation (₹1 to ₹448)
-    let paidAmount = TOTAL_FIXED_PRICE;
-    if (mode === 'Advance') {
-      paidAmount = parseFloat(advanceInput);
-      if (isNaN(paidAmount) || paidAmount < 1 || paidAmount > 448) {
-        alert("❌ Advance payment must be between ₹1 and ₹448!");
-        return;
-      }
-    }
-
-    const duesAmount = TOTAL_FIXED_PRICE - paidAmount;
-
-    // Check Anti-Fraud UTR Duplication
-    let bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-    const isDuplicateUTR = bookings.some(b => b.utr.toLowerCase() === utr.toLowerCase());
-
-    if (isDuplicateUTR) {
-      alert("🚨 DUPLICATE UTR DETECTED!\n\nThis UTR transaction number has already been used. Duplicate entries are blocked!");
-      return;
-    }
-
-    // Generate Sequential Ticket ID & Unique Verification Code
-    const nextSeq = bookings.length + 1;
-    const ticketId = `#TBC-${String(nextSeq).padStart(4, '0')}`;
-    const securityCode = generateSecurityCode();
-
-    const targetSlotDateTime = new Date(`${date}T${time}:00`);
-
-    currentBookingData = {
-      ticketId,
-      securityCode,
-      name,
-      phone,
-      address,
-      service,
-      slotDate: date,
-      slotTime: time,
-      slotFullISO: targetSlotDateTime.toISOString(),
-      mode,
-      paidAmount,
-      duesAmount,
-      utr,
-      screenshot: screenshotBase64,
-      status: 'Active',
-      createdAt: new Date().toISOString()
-    };
-
-    // Save Database & Session State
-    bookings.push(currentBookingData);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookings));
-    localStorage.setItem(ACTIVE_SESSION_KEY, JSON.stringify(currentBookingData));
-
-    renderPassUI(currentBookingData);
-    renderHistory();
-    alert("🎉 VIP Golden Pass Generated Successfully!");
-  }
-
-  // Render Pass UI with Overtime Auto-Expiry Engine
-  function renderPassUI(data) {
-    document.getElementById('pass-ticket-id').innerText = data.ticketId;
-    document.getElementById('pass-sec-code').innerText = data.securityCode;
-    document.getElementById('pass-name').innerText = data.name;
-    document.getElementById('pass-phone').innerText = data.phone;
-    document.getElementById('pass-address').innerText = data.address;
-    document.getElementById('pass-services').innerText = data.service;
-    
-    const slotObj = new Date(data.slotFullISO);
-    const formattedSlot = slotObj.toLocaleString('en-IN', {
-      dateStyle: 'medium',
-      timeStyle: 'short'
-    });
-
-    document.getElementById('pass-slot').innerText = formattedSlot;
-    document.getElementById('pass-utr').innerText = data.utr;
-    document.getElementById('pass-paid').innerText = `₹${data.paidAmount}`;
-    document.getElementById('pass-dues').innerText = `₹${data.duesAmount}`;
-
-    const noticeContainer = document.getElementById('status-notice-container');
-    const now = new Date();
-
-    // Overtime Expiry Check Algorithm
-    const isExpired = now > slotObj;
-
-    if (isExpired && data.status !== 'Completed') {
-      noticeContainer.innerHTML = `
-        <div class="expired-box">
-          🔴 EXPIRED / INVALID PASS<br>
-          <span style="font-weight: 500; font-size: 11px;">This appointment date and time slot has passed.</span>
-        </div>
-      `;
-    } else if (data.duesAmount > 0) {
-      noticeContainer.innerHTML = `
-        <div class="dues-warning-box">
-          ⚠️ <strong>REMAINING DUES: ₹${data.duesAmount}</strong><br>
-          Note: Remaining balance of ₹${data.duesAmount} must be paid at the salon prior to service.
-        </div>
-      `;
-    } else {
-      noticeContainer.innerHTML = `
-        <div class="full-paid-box">
-          <i class="fa-solid fa-circle-check"></i> FULL PAYMENT RECEIVED (₹449)
-        </div>
-      `;
-    }
-
-    document.getElementById('booking-form-card').style.display = 'none';
-    document.getElementById('golden-vip-pass').style.display = 'block';
-  }
-
-  // Send WhatsApp Ticket
-  function sendWhatsAppMessage() {
-    if (!currentBookingData) return;
-
-    const slotObj = new Date(currentBookingData.slotFullISO);
-    const formattedSlot = slotObj.toLocaleString('en-IN', {
-      dateStyle: 'medium',
-      timeStyle: 'short'
-    });
-
-    let duesText = `FULL PAID (₹449)`;
-    if (currentBookingData.duesAmount > 0) {
-      duesText = `Dues Remaining: ₹${currentBookingData.duesAmount}%0A⚠️ *Note:* Remaining balance of ₹${currentBookingData.duesAmount} must be paid at the salon prior to service.`;
-    }
-
-    const msg = `*--- THE BARBER CUT VIP TICKET ---*%0A` +
-      `🎫 *Ticket ID:* ${currentBookingData.ticketId}%0A` +
-      `🔐 *Security Code:* ${currentBookingData.securityCode}%0A` +
-      `👤 *Customer Name:* ${currentBookingData.name}%0A` +
-      `📱 *Mobile:* ${currentBookingData.phone}%0A` +
-      `📍 *Address:* ${currentBookingData.address}%0A` +
-      `✂️ *Services:* ${currentBookingData.service}%0A` +
-      `📅 *Slot Time:* ${formattedSlot}%0A` +
-      `--------------------------------%0A` +
-      `💳 *UTR Number:* ${currentBookingData.utr}%0A` +
-      `💵 *Amount Paid:* ₹${currentBookingData.paidAmount}%0A` +
-      `📌 *Payment Status:* ${duesText}%0A` +
-      `--------------------------------%0A` +
-      `📍 *Shop Location:* Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)%0A` +
-      `🗺️ *Google Maps:* https://www.google.com/maps/search/?api=1&query=Maa+Chamunda+Mandir+Surhari+More+Bypass+Road+Manpur+Gaya`;
-
-    window.open(`https://wa.me/919130346008?text=${msg}`, '_blank');
-  }
-
-  // Download VIP Pass as PNG Image
-  function downloadPassImage() {
-    const passElement = document.getElementById('golden-vip-pass');
-    html2canvas(passElement, {
-      scale: 2,
-      backgroundColor: null
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `${currentBookingData.ticketId}_BarberCut_Pass.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-
-  function resetToNewBooking() {
-    localStorage.removeItem(ACTIVE_SESSION_KEY);
-    currentBookingData = null;
-    document.getElementById('golden-vip-pass').style.display = 'none';
-    document.getElementById('booking-form-card').style.display = 'block';
-  }
-
-  // Render Customer History
-  function renderHistory() {
-    const bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-    const historyDiv = document.getElementById('booking-history-list');
-    
-    if (bookings.length === 0) return;
-
-    const now = new Date();
-
-    historyDiv.innerHTML = bookings.slice().reverse().map(b => {
-      const slotObj = new Date(b.slotFullISO);
-      const isExpired = now > slotObj;
-      let badgeClass = 'badge-active';
-      let statusText = 'ACTIVE 🟢';
-
-      if (b.status === 'Completed') {
-        badgeClass = 'badge-completed';
-        statusText = 'COMPLETED ✔';
-      } else if (isExpired) {
-        badgeClass = 'badge-expired';
-        statusText = 'EXPIRED 🔴';
-      }
-
-      return `
-        <div class="history-item">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>${b.ticketId} [${b.securityCode}] - ${b.name}</strong>
-            <span class="badge ${badgeClass}">${statusText}</span>
-          </div>
-          <div style="color:#cbd5e1; font-size:11px; margin-top:4px;">Services: ${b.service}</div>
-          <div style="color:#f59e0b; font-size:11px; margin-top:2px;">Paid: ₹${b.paidAmount} | Dues: ₹${b.duesAmount}</div>
-          <div style="color:#6b7280; font-size:10px; margin-top:2px;">Slot: ${slotObj.toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // Admin Portal Controls
-  function openAdminPanel() {
-    const pwd = prompt("Enter Owner Admin Master Password:");
-    if (pwd === MASTER_PASSWORD) {
-      document.getElementById('admin-panel').style.display = 'block';
-      renderAdminBookings();
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    } else if (pwd !== null) {
-      alert("❌ Incorrect Admin Password!");
-    }
-  }
-
-  function renderAdminBookings() {
-    const bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-    const query = document.getElementById('admin-search').value.toLowerCase();
-    const listDiv = document.getElementById('admin-bookings-list');
-
-    const filtered = bookings.filter(b => 
-      b.ticketId.toLowerCase().includes(query) || 
-      (b.securityCode && b.securityCode.toLowerCase().includes(query)) || 
-      b.utr.toLowerCase().includes(query) ||
-      b.phone.includes(query)
-    );
-
-    if (filtered.length === 0) {
-      listDiv.innerHTML = `<p style="font-size:11px; color:#6b7280;">No matching records found.</p>`;
-      return;
-    }
-
-    const now = new Date();
-
-    listDiv.innerHTML = filtered.slice().reverse().map((b) => {
-      const slotObj = new Date(b.slotFullISO);
-      const isExpired = now > slotObj;
-
-      return `
-        <div style="background:#030712; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #374151; font-size:12px;">
-          <div style="display:flex; justify-content:space-between;">
-            <strong>${b.ticketId} [${b.securityCode}] - ${b.name}</strong>
-            <span style="color:#f59e0b;">${b.phone}</span>
-          </div>
-          <div style="color:#cbd5e1; font-size:11px; margin-top:4px;">Address: ${b.address}</div>
-          <div style="color:#38bdf8; font-size:11px; margin-top:2px;">UTR: ${b.utr}</div>
-          <div style="color:#34d399; font-size:11px; margin-top:2px;">Paid: ₹${b.paidAmount} | Dues: ₹${b.duesAmount}</div>
-          <div style="color:#6b7280; font-size:10px; margin-top:2px;">Slot: ${slotObj.toLocaleString('en-IN')}</div>
-          <div style="color:${isExpired ? '#ef4444' : '#10b981'}; font-weight:bold; font-size:10px; margin-top:2px;">
-            ${isExpired ? 'OVERTIME EXPIRED' : 'ACTIVE SLOT'}
-          </div>
-          ${b.screenshot ? `
-            <div style="margin-top:6px;">
-              <a href="${b.screenshot}" target="_blank" style="color:#fbbf24; font-size:11px; text-decoration:underline;">View Payment Screenshot 📷</a>
-            </div>
-          ` : ''}
-          <div style="margin-top:8px;">
-            ${b.status !== 'Completed' ? `
-              <button style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="markCompleted('${b.ticketId}')">
-                Mark Completed 🔴
-              </button>
-            ` : `<span style="color:#10b981; font-weight:bold; font-size:11px;">Completed ✔</span>`}
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function markCompleted(ticketId) {
-    let bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-    bookings = bookings.map(b => b.ticketId === ticketId ? { ...b, status: 'Completed' } : b);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookings));
-    renderAdminBookings();
-    renderHistory();
-  }
-
-  // Restore Active Session on App Initialization
-  window.onload = function() {
-    renderHistory();
-    const savedSession = localStorage.getItem(ACTIVE_SESSION_KEY);
-    if (savedSession) {
-      try {
-        currentBookingData = JSON.parse(savedSession);
-        renderPassUI(currentBookingData);
-      } catch(e) {
-        console.error("Session restoration error:", e);
-      }
-    }
-  };
-</script>
-
-</body>
-</html>
+      <
