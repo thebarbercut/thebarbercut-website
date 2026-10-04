@@ -1109,6 +1109,80 @@
     }
   };
 </script>
+<!-- === FRAUD PROTECTION & OCR CODE (Isey index.html ke sabse niche paste karein) === -->
 
+<!-- Tesseract OCR Library (Image scanning ke liye) -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+
+<!-- Anti-Fraud Verification Container -->
+<div id="fraudProtectionBox" style="max-width: 400px; margin: 20px auto; padding: 20px; border: 2px solid #d4af37; border-radius: 10px; background: #181818; color: #fff; font-family: Arial, sans-serif; text-align: center;">
+    <h3 style="color: #d4af37; margin-top: 0;">Payment Auto-Verification</h3>
+    
+    <div style="margin-bottom: 12px; text-align: left;">
+        <label style="font-size: 12px; color: #ccc;">Enter 12-Digit UTR Number:</label>
+        <input type="text" id="secUtrInput" placeholder="Enter UTR Number" style="width: 100%; padding: 10px; margin-top: 4px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box;">
+    </div>
+
+    <div style="margin-bottom: 15px; text-align: left;">
+        <label style="font-size: 12px; color: #ccc;">Upload Payment Screenshot:</label>
+        <input type="file" id="secImgInput" accept="image/*" style="width: 100%; padding: 6px; margin-top: 4px; color: #aaa;">
+    </div>
+
+    <button onclick="verifyUtrAndScreenshot()" style="width: 100%; padding: 12px; background: #d4af37; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">
+        Verify & Generate Receipt
+    </button>
+
+    <!-- STATUS / RECEIPT FAILED MESSAGE -->
+    <div id="secResultMsg" style="margin-top: 15px; font-weight: bold; font-size: 14px;"></div>
+</div>
+
+<script>
+async function verifyUtrAndScreenshot() {
+    const utrVal = document.getElementById('secUtrInput').value.trim();
+    const imgFile = document.getElementById('secImgInput').files[0];
+    const msgDiv = document.getElementById('secResultMsg');
+
+    if (!utrVal || !imgFile) {
+        alert("Kripya UTR Number aur Screenshot dono dalein!");
+        return;
+    }
+
+    // 1. Ek UTR se ek hi receipt nikalne ka check (Duplicate Prevention)
+    let usedUTRs = JSON.parse(localStorage.getItem('tbc_used_utrs') || '[]');
+    if (usedUTRs.includes(utrVal)) {
+        msgDiv.style.color = "#ff4d4d";
+        msgDiv.innerText = "❌ RECEIPT FAILED: Yeh UTR Number pehle se use ho chuka hai!";
+        return;
+    }
+
+    msgDiv.style.color = "#e6b800";
+    msgDiv.innerText = "⏳ Screenshot scan ho raha hai...";
+
+    try {
+        // 2. OCR Scan - Screenshot ke andar likha UTR read karna
+        const scanRes = await Tesseract.recognize(imgFile, 'eng');
+        const extractedText = scanRes.data.text.replace(/\s+/g, ''); // spaces remove
+        const cleanUTR = utrVal.replace(/\s+/g, '');
+
+        // Check: Agar Screenshot ka UTR aur Input UTR Same hain
+        if (extractedText.includes(cleanUTR)) {
+            // Success: UTR ko list me save karein
+            usedUTRs.push(utrVal);
+            localStorage.setItem('tbc_used_utrs', JSON.stringify(usedUTRs));
+
+            msgDiv.style.color = "#2ed573";
+            msgDiv.innerText = "✅ RECEIPT SUCCESSFUL! UTR Matched.";
+        } else {
+            // Fail: Agar UTR match nahi hota
+            msgDiv.style.color = "#ff4d4d";
+            msgDiv.innerText = "❌ RECEIPT FAILED: Screenshot aur Input UTR Same nahi hain!";
+        }
+    } catch (err) {
+        msgDiv.style.color = "#ff4d4d";
+        msgDiv.innerText = "❌ RECEIPT FAILED: Screenshot scan karne me error aaya.";
+    }
+}
+</script>
+<!-- === END FRAUD PROTECTION CODE === -->
 </body>
 </html>
