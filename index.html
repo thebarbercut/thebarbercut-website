@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Strict Viewport Settings to Lock Zoom In/Out on Mobile Devices -->
+  <!-- Strict Viewport Settings to Lock Zoom In/Out & Prevent Screen Jitter -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
-  <title>The Barber Cut - VIP Booking Pass</title>
+  <title>THE BARBER CUT - VIP Booking App</title>
 
-  <!-- Font Awesome Icons & Google Fonts -->
+  <!-- Google Fonts & Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  
-  <!-- html2canvas Library for Generating PNG Pass Images -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- html2canvas Library for High-Res PNG Pass Downloads -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    /* Global Reset & Strict Mobile Touch Lock */
+    /* Strict Mobile Touch Lock & Reset */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      touch-action: manipulation; /* Disables double-tap zoom */
-      user-select: none; /* App-like feel */
+      touch-action: manipulation; /* Prevents double-tap zoom */
+      user-select: none; /* Mobile app native feel */
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -29,80 +29,84 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #080c14;
-      color: #f8fafc;
+      background-color: #030712;
+      color: #f3f4f6;
       -webkit-text-size-adjust: 100%;
     }
 
-    /* Allow selection inside input fields */
     input, textarea, select {
-      user-select: text !important;
+      user-select: text !important; /* Allow typing in form controls */
     }
 
-    /* Main Container (Simulating Native Mobile Frame) */
+    /* Native App Mobile Frame Container */
     .app-container {
       max-width: 480px;
       margin: 0 auto;
       min-height: 100vh;
-      background: #0f172a;
+      background: #0b0f19;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
       position: relative;
     }
 
-    /* Top Branding Header */
+    /* Ultra Pro Max Gold Header Banner */
     .header-banner {
       width: 100%;
-      height: 140px;
+      height: 150px;
       object-fit: cover;
       border-bottom: 2px solid #f59e0b;
+      filter: brightness(0.9);
     }
 
     .shop-header {
       text-align: center;
       padding: 0 15px 15px 15px;
-      margin-top: -45px;
+      margin-top: -50px;
       position: relative;
       z-index: 2;
     }
 
     .shop-logo {
-      width: 90px;
-      height: 90px;
+      width: 95px;
+      height: 95px;
       border-radius: 50%;
       border: 4px solid #f59e0b;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
       object-fit: cover;
-      background: #1e293b;
+      background: #111827;
     }
 
     .shop-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: #f59e0b;
-      margin-top: 6px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
+      font-family: 'Cinzel', serif;
+      font-size: 26px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fef3c7, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 8px;
+      letter-spacing: 1px;
     }
 
     .shop-owner {
       font-size: 13px;
-      color: #94a3b8;
+      color: #9ca3af;
       font-weight: 500;
+      letter-spacing: 0.5px;
     }
 
     /* Address & Direct Navigation Card */
     .address-card {
       background: rgba(245, 158, 11, 0.08);
-      border: 1px solid #f59e0b;
-      border-radius: 12px;
-      padding: 12px;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 14px;
+      padding: 12px 15px;
       margin: 10px 15px;
       text-align: center;
       font-size: 12px;
       color: #fbbf24;
       line-height: 1.5;
+      backdrop-filter: blur(8px);
     }
 
     .header-actions {
@@ -124,8 +128,9 @@
       justify-content: center;
       gap: 6px;
       color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .btn-nav:active {
@@ -140,19 +145,19 @@
       background: linear-gradient(45deg, #2563eb, #1d4ed8);
     }
 
-    /* Main Section Cards */
+    /* Main Section Styling */
     .main-content {
       padding: 0 15px 20px 15px;
       flex: 1;
     }
 
     .card {
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 16px;
+      background: #111827;
+      border-radius: 16px;
+      padding: 18px;
       margin-bottom: 20px;
-      border: 1px solid #334155;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      border: 1px solid #1f2937;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
     .card-title {
@@ -167,20 +172,19 @@
       letter-spacing: 0.5px;
     }
 
-    /* Fixed Pricing Highlight Tag */
+    /* Fixed Pricing Highlight Badge */
     .price-tag-box {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0f172a;
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      color: #030712;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 800;
       font-size: 14px;
       text-align: center;
       margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
       display: flex;
       align-items: center;
-      justify-content: justify;
       justify-content: center;
       gap: 8px;
     }
@@ -193,7 +197,7 @@
     .form-group label {
       display: block;
       font-size: 12px;
-      color: #94a3b8;
+      color: #9ca3af;
       margin-bottom: 6px;
       font-weight: 500;
     }
@@ -201,9 +205,9 @@
     .form-control {
       width: 100%;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #475569;
-      background: #0f172a;
+      border-radius: 10px;
+      border: 1px solid #374151;
+      background: #030712;
       color: #ffffff;
       font-size: 13px;
       font-family: inherit;
@@ -220,12 +224,12 @@
       height: 75px;
     }
 
-    /* Payment QR & Direct Pay Container */
+    /* Payment QR Box */
     .qr-box {
       text-align: center;
-      background: #0f172a;
+      background: #030712;
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px dashed #f59e0b;
       margin-bottom: 15px;
     }
@@ -234,58 +238,64 @@
       width: 170px;
       height: 170px;
       object-fit: contain;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 2px solid #ffffff;
       margin-bottom: 10px;
       background: #ffffff;
     }
 
     .btn-copy {
-      background: #334155;
+      background: #1f2937;
       color: #fbbf24;
       border: 1px solid #f59e0b;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       margin-top: 6px;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      transition: background 0.2s ease;
     }
 
-    /* Action Buttons */
+    .btn-copy:active {
+      background: #374151;
+    }
+
+    /* Action Buttons with Fast Trigger */
     .btn-submit {
       width: 100%;
       padding: 14px;
       background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0f172a;
+      color: #030712;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 800;
       font-size: 14px;
       cursor: pointer;
       margin-top: 10px;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      transition: transform 0.1s ease;
     }
 
     .btn-submit:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
-    /* Metallic Golden VIP Pass Card */
+    /* Metallic VIP Pass Styling */
     #golden-vip-pass {
-      background: linear-gradient(135deg, #18181b 0%, #451a03 50%, #18181b 100%);
+      background: linear-gradient(135deg, #090d16 0%, #311303 50%, #090d16 100%);
       border: 2px solid #f59e0b;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 20px;
       color: #ffffff;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.9);
       position: relative;
       margin-top: 15px;
       display: none;
@@ -332,7 +342,7 @@
     }
 
     .pass-label {
-      color: #cbd5e1;
+      color: #9ca3af;
       font-weight: 500;
     }
 
@@ -343,13 +353,13 @@
       max-width: 60%;
     }
 
-    /* Warning Notice Box for Dues */
+    /* Warning Notice Box for Dues & Expiry */
     .dues-warning-box {
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid #ef4444;
       color: #fca5a5;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       text-align: center;
       font-weight: 600;
       font-size: 12px;
@@ -362,11 +372,24 @@
       border: 1px solid #10b981;
       color: #6ee7b7;
       padding: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       text-align: center;
       font-weight: 700;
       font-size: 12px;
       margin-top: 14px;
+    }
+
+    .expired-box {
+      background: rgba(220, 38, 38, 0.25);
+      border: 2px solid #dc2626;
+      color: #fca5a5;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 13px;
+      margin-top: 14px;
+      letter-spacing: 0.5px;
     }
 
     .screenshot-preview {
@@ -374,15 +397,15 @@
       max-height: 180px;
       object-fit: contain;
       border-radius: 8px;
-      border: 1px solid #475569;
+      border: 1px solid #374151;
       margin-top: 10px;
     }
 
-    /* History & Admin Panel Styles */
+    /* History & Admin Panel Item Styling */
     .history-item {
-      background: #0f172a;
+      background: #030712;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 10px;
       border-left: 4px solid #f59e0b;
       font-size: 12px;
@@ -396,26 +419,27 @@
     }
 
     .badge-active { background: #10b981; color: #000; }
-    .badge-completed { background: #ef4444; color: #fff; }
+    .badge-expired { background: #dc2626; color: #fff; }
+    .badge-completed { background: #3b82f6; color: #fff; }
 
     /* Support Card */
     .support-card {
-      background: linear-gradient(135deg, #1e293b, #0f172a);
+      background: linear-gradient(135deg, #111827, #030712);
       border: 1px solid #3b82f6;
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 14px;
+      padding: 16px;
       margin-top: 15px;
       text-align: center;
       font-size: 12px;
     }
 
-    /* App Footer */
+    /* Footer */
     .footer {
       text-align: center;
       padding: 18px;
       font-size: 11px;
-      color: #64748b;
-      border-top: 1px solid #1e293b;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
     }
 
     .admin-link {
@@ -432,22 +456,22 @@
 
 <div class="app-container">
 
-  <!-- Header Banner & Shop DP -->
+  <!-- Shop Header Banner & Logo DP -->
   <img src="./banner.png" alt="Shop Banner" class="header-banner" onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800'" />
   
   <div class="shop-header">
-    <img src="./logo.jpg" alt="Shop Logo" class="shop-logo" onerror="this.src='https://via.placeholder.com/90?text=TBC'" />
-    <div class="shop-title">The Barber Cut</div>
+    <img src="./logo.jpg" alt="Shop Logo" class="shop-logo" onerror="this.src='https://via.placeholder.com/95?text=TBC'" />
+    <div class="shop-title">THE BARBER CUT</div>
     <div class="shop-owner">Proprietor: Vikash Sharma</div>
   </div>
 
-  <!-- Explicit Location Box -->
+  <!-- Physical Location Details Box -->
   <div class="address-card">
-    <i class="fa-solid fa-location-dot"></i> <strong>Official Shop Address:</strong><br>
+    <i class="fa-solid fa-location-dot"></i> <strong>Official Address:</strong><br>
     Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)
   </div>
 
-  <!-- Social & Navigation Actions -->
+  <!-- Social Navigation Links -->
   <div class="header-actions">
     <a href="https://www.instagram.com/the_barber_cut_v.s" target="_blank" class="btn-nav btn-insta">
       <i class="fa-brands fa-instagram"></i> Instagram
@@ -457,15 +481,15 @@
     </a>
   </div>
 
-  <!-- Main Booking Content Area -->
+  <!-- Main Application Content Area -->
   <div class="main-content">
 
+    <!-- Booking Form Card -->
     <div class="card" id="booking-form-card">
       <div class="card-title">
-        <i class="fa-solid fa-calendar-check"></i> Book VIP Appointment
+        <i class="fa-solid fa-scissors"></i> Book VIP Appointment
       </div>
 
-      <!-- Fixed Rate Notice -->
       <div class="price-tag-box">
         <i class="fa-solid fa-tag"></i> Fixed Total Service Rate: ₹449
       </div>
@@ -485,15 +509,34 @@
         <input type="text" id="cust-address" class="form-control" placeholder="e.g., Manpur, Gaya" required />
       </div>
 
-      <!-- Custom Service Specification Text Input -->
       <div class="form-group">
         <label>Specify Required Services *</label>
-        <textarea id="cust-service" class="form-control" placeholder="Type your required services (e.g. Haircut, Beard Styling, Hair Color, Facial...)" required></textarea>
+        <textarea id="cust-service" class="form-control" placeholder="Describe your required services (e.g. Haircut, Beard Trim, Hair Color, Facial...)" required></textarea>
       </div>
 
       <div class="form-group">
-        <label>Select Preferred Date & Time Slot *</label>
-        <input type="datetime-local" id="cust-slot" class="form-control" required />
+        <label>Select Booking Date (Closed on Thursdays) *</label>
+        <input type="date" id="cust-date" class="form-control" onchange="validateBookingDate()" required />
+      </div>
+
+      <div class="form-group">
+        <label>Select Time Slot (08:00 AM to 08:00 PM) *</label>
+        <select id="cust-time" class="form-control" required>
+          <option value="">-- Choose Time Slot --</option>
+          <option value="08:00">08:00 AM</option>
+          <option value="09:00">09:00 AM</option>
+          <option value="10:00">10:00 AM</option>
+          <option value="11:00">11:00 AM</option>
+          <option value="12:00">12:00 PM</option>
+          <option value="13:00">01:00 PM</option>
+          <option value="14:00">02:00 PM</option>
+          <option value="15:00">03:00 PM</option>
+          <option value="16:00">04:00 PM</option>
+          <option value="17:00">05:00 PM</option>
+          <option value="18:00">06:00 PM</option>
+          <option value="19:00">07:00 PM</option>
+          <option value="20:00">08:00 PM</option>
+        </select>
       </div>
 
       <div class="card-title" style="margin-top: 20px; color: #f59e0b;">
@@ -520,8 +563,8 @@
       </div>
 
       <div class="form-group" id="advance-group" style="display: none;">
-        <label>Advance Paid Amount (₹1 to ₹449) *</label>
-        <input type="number" id="cust-advance" class="form-control" placeholder="Enter advance paid (e.g., 400)" min="1" max="449" oninput="calculateDuesOnFly()" />
+        <label>Advance Paid Amount (₹1 to ₹448) *</label>
+        <input type="number" id="cust-advance" class="form-control" placeholder="Enter advance paid (e.g., 200)" min="1" max="448" oninput="calculateDuesOnFly()" />
         <small id="dues-live-hint" style="color: #fbbf24; font-size: 11px; margin-top: 4px; display: block;"></small>
       </div>
 
@@ -541,13 +584,14 @@
       </button>
     </div>
 
+    <!-- Golden VIP Pass Display Screen -->
     <div id="golden-vip-pass">
       <div class="pass-header">
-        <div style="font-size: 16px; font-weight: 800; color: #f59e0b; letter-spacing: 0.8px;">THE BARBER CUT VIP PASS</div>
-        <div style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Maa Chamunda Mandir, Manpur, Gaya</div>
+        <div style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #f59e0b; letter-spacing: 1px;">THE BARBER CUT</div>
+        <div style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Prop. Vikash Sharma - Manpur, Gaya</div>
         <div class="pass-ticket-id" id="pass-ticket-id">#TBC-0001</div>
         <div class="security-code-box">
-          🔐 UNIQUE SECURITY CODE: <span id="pass-sec-code">TBC-8942</span>
+          🔐 SECURITY CODE: <span id="pass-sec-code">SEC-8942</span>
         </div>
       </div>
 
@@ -564,11 +608,11 @@
         <span class="pass-value" id="pass-address">-</span>
       </div>
       <div class="pass-row">
-        <span class="pass-label">Custom Services:</span>
+        <span class="pass-label">Services:</span>
         <span class="pass-value" id="pass-services" style="color: #f59e0b;">-</span>
       </div>
       <div class="pass-row">
-        <span class="pass-label">Slot Date & Time:</span>
+        <span class="pass-label">Appointment Slot:</span>
         <span class="pass-value" id="pass-slot">-</span>
       </div>
       <div class="pass-row">
@@ -591,15 +635,18 @@
         <span class="pass-value" id="pass-dues" style="color: #f87171;">₹0</span>
       </div>
 
-      <!-- Mandatory English Notice for Dues -->
-      <div id="dues-notice-container"></div>
+      <!-- Dues & Expiry Warning Notice Box -->
+      <div id="status-notice-container"></div>
 
       <div style="margin-top: 18px; text-align: center;">
         <button class="btn-submit" style="background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff;" onclick="sendWhatsAppMessage()">
-          <i class="fa-brands fa-whatsapp"></i> Share Pass to WhatsApp
+          <i class="fa-brands fa-whatsapp"></i> Share Ticket to WhatsApp
         </button>
         <button class="btn-submit" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #ffffff; margin-top: 8px;" onclick="downloadPassImage()">
           <i class="fa-solid fa-download"></i> Download VIP Pass Image
+        </button>
+        <button class="btn-submit" style="background: #374151; color: #ffffff; margin-top: 8px;" onclick="resetToNewBooking()">
+          <i class="fa-solid fa-plus"></i> Book Another Appointment
         </button>
       </div>
     </div>
@@ -607,59 +654,60 @@
     <!-- Contact Support Card -->
     <div class="support-card">
       <div style="color: #38bdf8; font-weight: 700; margin-bottom: 4px;">
-        <i class="fa-solid fa-headset"></i> Need Help or Immediate Support?
+        <i class="fa-solid fa-headset"></i> Need Help or Support?
       </div>
-      <div style="color: #cbd5e1;">Call Proprietor Vikash Sharma: <strong>+91 9122039395</strong></div>
+      <div style="color: #cbd5e1;">Contact Proprietor Vikash Sharma: <strong>+91 9122039395</strong></div>
       <a href="tel:9122039395" class="btn-copy" style="margin-top: 8px; text-decoration: none;">
         <i class="fa-solid fa-phone"></i> Call Support Now
       </a>
     </div>
 
-    <!-- Booking History Container -->
+    <!-- Booking History Card for Customers -->
     <div class="card" style="margin-top: 20px;">
       <div class="card-title">
-        <i class="fa-solid fa-clock-rotate-left"></i> Recent Booking Passes
+        <i class="fa-solid fa-clock-rotate-left"></i> My Booking History & Pass Status
       </div>
       <div id="booking-history-list">
-        <p style="font-size: 12px; color: #64748b;">No previous bookings recorded on this device.</p>
+        <p style="font-size: 12px; color: #6b7280;">No previous bookings found on this device.</p>
       </div>
     </div>
 
-    <!-- Owner Admin Panel -->
+    <!-- Owner Admin Verification Panel -->
     <div class="card" id="admin-panel" style="display: none;">
       <div class="card-title" style="color: #ef4444;">
-        <i class="fa-solid fa-shield-halved"></i> Owner Admin Verification Panel
+        <i class="fa-solid fa-shield-halved"></i> Owner Admin Master Verification Panel
       </div>
       <div class="form-group">
-        <input type="text" id="admin-search" class="form-control" placeholder="Search by Ticket ID (#TBC-0001), Code, UTR or Phone..." onkeyup="renderAdminBookings()" />
+        <input type="text" id="admin-search" class="form-control" placeholder="Search by Ticket ID (#TBC-0001), Security Code, UTR or Phone..." onkeyup="renderAdminBookings()" />
       </div>
       <div id="admin-bookings-list"></div>
     </div>
 
   </div>
 
-  <!-- Footer Links -->
+  <!-- App Footer -->
   <div class="footer">
-    © The Barber Cut - Prop. Vikash Sharma<br>
-    <span class="admin-link" onclick="openAdminPanel()">Owner Admin Portal</span>
+    © THE BARBER CUT - Prop. Vikash Sharma<br>
+    Maa Chamunda Mandir, Manpur, Gaya (Bihar)<br>
+    <span class="admin-link" onclick="openAdminPanel()">Owner Admin Portal Login</span>
   </div>
 
 </div>
 
 <script>
-  // Storage Keys & Owner Master Password
-  const LOCAL_STORAGE_KEY = 'tbc_bookings_db_v2';
-  const ACTIVE_SESSION_KEY = 'tbc_active_session_v2';
+  // Global Database Keys & Constants
+  const LOCAL_STORAGE_KEY = 'tbc_master_bookings_db_v3';
+  const ACTIVE_SESSION_KEY = 'tbc_active_session_v3';
   const MASTER_PASSWORD = '5393902291912327';
   const TOTAL_FIXED_PRICE = 449;
 
   let currentBookingData = null;
   let screenshotBase64 = null;
 
-  // Touch Event Listeners to Lock Pinch & Double-Tap Zoom
+  // Strict Touch Event Listeners to Lock Multi-Touch Pinch & Double-Tap Zoom
   document.addEventListener('touchstart', function(event) {
     if (event.touches.length > 1) {
-      event.preventDefault(); // Lock multi-touch pinch zoom
+      event.preventDefault(); // Prevent pinch zoom
     }
   }, { passive: false });
 
@@ -667,10 +715,400 @@
   document.addEventListener('touchend', function(event) {
     const now = (new Date()).getTime();
     if (now - lastTouchEnd <= 300) {
-      event.preventDefault(); // Lock double-tap zoom
+      event.preventDefault(); // Prevent double-tap zoom
     }
     lastTouchEnd = now;
   }, false);
 
-  // Copy Direct Phone Payment Number
+  // Copy Direct Payment Phone Number
   function copyUPI() {
+    const tempInput = document.createElement('input');
+    tempInput.value = '9130346008';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert("✅ Direct Payment Number (9130346008) copied to clipboard!");
+  }
+
+  // Thursday Closure Validation Rule
+  function validateBookingDate() {
+    const dateInput = document.getElementById('cust-date').value;
+    if (!dateInput) return;
+
+    const selectedDate = new Date(dateInput);
+    const dayOfWeek = selectedDate.getUTCDay(); // 4 = Thursday
+
+    if (dayOfWeek === 4) {
+      alert("🚨 SHOP CLOSED ON THURSDAYS!\n\nPlease select another date. THE BARBER CUT remains closed on Thursdays.");
+      document.getElementById('cust-date').value = '';
+    }
+  }
+
+  // Toggle Advance Payment Field
+  function toggleAdvanceInput() {
+    const mode = document.getElementById('payment-mode').value;
+    const advanceGroup = document.getElementById('advance-group');
+    if (mode === 'Advance') {
+      advanceGroup.style.display = 'block';
+    } else {
+      advanceGroup.style.display = 'none';
+      document.getElementById('cust-advance').value = '';
+      document.getElementById('dues-live-hint').innerText = '';
+    }
+  }
+
+  // Live Dues Calculation
+  function calculateDuesOnFly() {
+    const advanceVal = parseFloat(document.getElementById('cust-advance').value) || 0;
+    const hintElem = document.getElementById('dues-live-hint');
+    if (advanceVal > 448) {
+      hintElem.innerHTML = `<span style="color:#ef4444;">❌ Advance cannot exceed ₹448! For full payment, select Full Payment mode.</span>`;
+    } else if (advanceVal >= 1) {
+      const dues = TOTAL_FIXED_PRICE - advanceVal;
+      hintElem.innerText = `Remaining Dues to pay at salon: ₹${dues}`;
+    } else {
+      hintElem.innerText = '';
+    }
+  }
+
+  // Read Uploaded Payment Screenshot
+  function previewScreenshot(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        screenshotBase64 = e.target.result;
+        const preview = document.getElementById('ss-preview');
+        preview.src = screenshotBase64;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Generate Secret Random Verification Code
+  function generateSecurityCode() {
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    return `TBC-${randomNum}`;
+  }
+
+  // Generate VIP Pass Logic
+  function generateVIPPass() {
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const address = document.getElementById('cust-address').value.trim();
+    const service = document.getElementById('cust-service').value.trim();
+    const date = document.getElementById('cust-date').value;
+    const time = document.getElementById('cust-time').value;
+    const mode = document.getElementById('payment-mode').value;
+    const advanceInput = document.getElementById('cust-advance').value.trim();
+    const utr = document.getElementById('cust-utr').value.trim();
+
+    // Field Validations
+    if (!name || !phone || !address || !service || !date || !time || !utr || !screenshotBase64) {
+      alert("❌ Please fill in all required fields and upload the payment screenshot!");
+      return;
+    }
+
+    if (phone.length !== 10 || isNaN(phone)) {
+      alert("❌ Please enter a valid 10-Digit Mobile Number!");
+      return;
+    }
+
+    if (utr.length < 8) {
+      alert("❌ Please enter a valid 12-Digit UTR Transaction Number!");
+      return;
+    }
+
+    // Strict Advance Calculation (₹1 to ₹448)
+    let paidAmount = TOTAL_FIXED_PRICE;
+    if (mode === 'Advance') {
+      paidAmount = parseFloat(advanceInput);
+      if (isNaN(paidAmount) || paidAmount < 1 || paidAmount > 448) {
+        alert("❌ Advance payment must be between ₹1 and ₹448!");
+        return;
+      }
+    }
+
+    const duesAmount = TOTAL_FIXED_PRICE - paidAmount;
+
+    // Check Anti-Fraud UTR Duplication
+    let bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    const isDuplicateUTR = bookings.some(b => b.utr.toLowerCase() === utr.toLowerCase());
+
+    if (isDuplicateUTR) {
+      alert("🚨 DUPLICATE UTR DETECTED!\n\nThis UTR transaction number has already been used. Duplicate entries are blocked!");
+      return;
+    }
+
+    // Generate Sequential Ticket ID & Unique Verification Code
+    const nextSeq = bookings.length + 1;
+    const ticketId = `#TBC-${String(nextSeq).padStart(4, '0')}`;
+    const securityCode = generateSecurityCode();
+
+    const targetSlotDateTime = new Date(`${date}T${time}:00`);
+
+    currentBookingData = {
+      ticketId,
+      securityCode,
+      name,
+      phone,
+      address,
+      service,
+      slotDate: date,
+      slotTime: time,
+      slotFullISO: targetSlotDateTime.toISOString(),
+      mode,
+      paidAmount,
+      duesAmount,
+      utr,
+      screenshot: screenshotBase64,
+      status: 'Active',
+      createdAt: new Date().toISOString()
+    };
+
+    // Save Database & Session State
+    bookings.push(currentBookingData);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookings));
+    localStorage.setItem(ACTIVE_SESSION_KEY, JSON.stringify(currentBookingData));
+
+    renderPassUI(currentBookingData);
+    renderHistory();
+    alert("🎉 VIP Golden Pass Generated Successfully!");
+  }
+
+  // Render Pass UI with Overtime Auto-Expiry Engine
+  function renderPassUI(data) {
+    document.getElementById('pass-ticket-id').innerText = data.ticketId;
+    document.getElementById('pass-sec-code').innerText = data.securityCode;
+    document.getElementById('pass-name').innerText = data.name;
+    document.getElementById('pass-phone').innerText = data.phone;
+    document.getElementById('pass-address').innerText = data.address;
+    document.getElementById('pass-services').innerText = data.service;
+    
+    const slotObj = new Date(data.slotFullISO);
+    const formattedSlot = slotObj.toLocaleString('en-IN', {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    });
+
+    document.getElementById('pass-slot').innerText = formattedSlot;
+    document.getElementById('pass-utr').innerText = data.utr;
+    document.getElementById('pass-paid').innerText = `₹${data.paidAmount}`;
+    document.getElementById('pass-dues').innerText = `₹${data.duesAmount}`;
+
+    const noticeContainer = document.getElementById('status-notice-container');
+    const now = new Date();
+
+    // Overtime Expiry Check Algorithm
+    const isExpired = now > slotObj;
+
+    if (isExpired && data.status !== 'Completed') {
+      noticeContainer.innerHTML = `
+        <div class="expired-box">
+          🔴 EXPIRED / INVALID PASS<br>
+          <span style="font-weight: 500; font-size: 11px;">This appointment date and time slot has passed.</span>
+        </div>
+      `;
+    } else if (data.duesAmount > 0) {
+      noticeContainer.innerHTML = `
+        <div class="dues-warning-box">
+          ⚠️ <strong>REMAINING DUES: ₹${data.duesAmount}</strong><br>
+          Note: Remaining balance of ₹${data.duesAmount} must be paid at the salon prior to service.
+        </div>
+      `;
+    } else {
+      noticeContainer.innerHTML = `
+        <div class="full-paid-box">
+          <i class="fa-solid fa-circle-check"></i> FULL PAYMENT RECEIVED (₹449)
+        </div>
+      `;
+    }
+
+    document.getElementById('booking-form-card').style.display = 'none';
+    document.getElementById('golden-vip-pass').style.display = 'block';
+  }
+
+  // Send WhatsApp Ticket
+  function sendWhatsAppMessage() {
+    if (!currentBookingData) return;
+
+    const slotObj = new Date(currentBookingData.slotFullISO);
+    const formattedSlot = slotObj.toLocaleString('en-IN', {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    });
+
+    let duesText = `FULL PAID (₹449)`;
+    if (currentBookingData.duesAmount > 0) {
+      duesText = `Dues Remaining: ₹${currentBookingData.duesAmount}%0A⚠️ *Note:* Remaining balance of ₹${currentBookingData.duesAmount} must be paid at the salon prior to service.`;
+    }
+
+    const msg = `*--- THE BARBER CUT VIP TICKET ---*%0A` +
+      `🎫 *Ticket ID:* ${currentBookingData.ticketId}%0A` +
+      `🔐 *Security Code:* ${currentBookingData.securityCode}%0A` +
+      `👤 *Customer Name:* ${currentBookingData.name}%0A` +
+      `📱 *Mobile:* ${currentBookingData.phone}%0A` +
+      `📍 *Address:* ${currentBookingData.address}%0A` +
+      `✂️ *Services:* ${currentBookingData.service}%0A` +
+      `📅 *Slot Time:* ${formattedSlot}%0A` +
+      `--------------------------------%0A` +
+      `💳 *UTR Number:* ${currentBookingData.utr}%0A` +
+      `💵 *Amount Paid:* ₹${currentBookingData.paidAmount}%0A` +
+      `📌 *Payment Status:* ${duesText}%0A` +
+      `--------------------------------%0A` +
+      `📍 *Shop Location:* Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)%0A` +
+      `🗺️ *Google Maps:* https://www.google.com/maps/search/?api=1&query=Maa+Chamunda+Mandir+Surhari+More+Bypass+Road+Manpur+Gaya`;
+
+    window.open(`https://wa.me/919130346008?text=${msg}`, '_blank');
+  }
+
+  // Download VIP Pass as PNG Image
+  function downloadPassImage() {
+    const passElement = document.getElementById('golden-vip-pass');
+    html2canvas(passElement, {
+      scale: 2,
+      backgroundColor: null
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `${currentBookingData.ticketId}_BarberCut_Pass.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  function resetToNewBooking() {
+    localStorage.removeItem(ACTIVE_SESSION_KEY);
+    currentBookingData = null;
+    document.getElementById('golden-vip-pass').style.display = 'none';
+    document.getElementById('booking-form-card').style.display = 'block';
+  }
+
+  // Render Customer History
+  function renderHistory() {
+    const bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    const historyDiv = document.getElementById('booking-history-list');
+    
+    if (bookings.length === 0) return;
+
+    const now = new Date();
+
+    historyDiv.innerHTML = bookings.slice().reverse().map(b => {
+      const slotObj = new Date(b.slotFullISO);
+      const isExpired = now > slotObj;
+      let badgeClass = 'badge-active';
+      let statusText = 'ACTIVE 🟢';
+
+      if (b.status === 'Completed') {
+        badgeClass = 'badge-completed';
+        statusText = 'COMPLETED ✔';
+      } else if (isExpired) {
+        badgeClass = 'badge-expired';
+        statusText = 'EXPIRED 🔴';
+      }
+
+      return `
+        <div class="history-item">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>${b.ticketId} [${b.securityCode}] - ${b.name}</strong>
+            <span class="badge ${badgeClass}">${statusText}</span>
+          </div>
+          <div style="color:#cbd5e1; font-size:11px; margin-top:4px;">Services: ${b.service}</div>
+          <div style="color:#f59e0b; font-size:11px; margin-top:2px;">Paid: ₹${b.paidAmount} | Dues: ₹${b.duesAmount}</div>
+          <div style="color:#6b7280; font-size:10px; margin-top:2px;">Slot: ${slotObj.toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Admin Portal Controls
+  function openAdminPanel() {
+    const pwd = prompt("Enter Owner Admin Master Password:");
+    if (pwd === MASTER_PASSWORD) {
+      document.getElementById('admin-panel').style.display = 'block';
+      renderAdminBookings();
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    } else if (pwd !== null) {
+      alert("❌ Incorrect Admin Password!");
+    }
+  }
+
+  function renderAdminBookings() {
+    const bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    const query = document.getElementById('admin-search').value.toLowerCase();
+    const listDiv = document.getElementById('admin-bookings-list');
+
+    const filtered = bookings.filter(b => 
+      b.ticketId.toLowerCase().includes(query) || 
+      (b.securityCode && b.securityCode.toLowerCase().includes(query)) || 
+      b.utr.toLowerCase().includes(query) ||
+      b.phone.includes(query)
+    );
+
+    if (filtered.length === 0) {
+      listDiv.innerHTML = `<p style="font-size:11px; color:#6b7280;">No matching records found.</p>`;
+      return;
+    }
+
+    const now = new Date();
+
+    listDiv.innerHTML = filtered.slice().reverse().map((b) => {
+      const slotObj = new Date(b.slotFullISO);
+      const isExpired = now > slotObj;
+
+      return `
+        <div style="background:#030712; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #374151; font-size:12px;">
+          <div style="display:flex; justify-content:space-between;">
+            <strong>${b.ticketId} [${b.securityCode}] - ${b.name}</strong>
+            <span style="color:#f59e0b;">${b.phone}</span>
+          </div>
+          <div style="color:#cbd5e1; font-size:11px; margin-top:4px;">Address: ${b.address}</div>
+          <div style="color:#38bdf8; font-size:11px; margin-top:2px;">UTR: ${b.utr}</div>
+          <div style="color:#34d399; font-size:11px; margin-top:2px;">Paid: ₹${b.paidAmount} | Dues: ₹${b.duesAmount}</div>
+          <div style="color:#6b7280; font-size:10px; margin-top:2px;">Slot: ${slotObj.toLocaleString('en-IN')}</div>
+          <div style="color:${isExpired ? '#ef4444' : '#10b981'}; font-weight:bold; font-size:10px; margin-top:2px;">
+            ${isExpired ? 'OVERTIME EXPIRED' : 'ACTIVE SLOT'}
+          </div>
+          ${b.screenshot ? `
+            <div style="margin-top:6px;">
+              <a href="${b.screenshot}" target="_blank" style="color:#fbbf24; font-size:11px; text-decoration:underline;">View Payment Screenshot 📷</a>
+            </div>
+          ` : ''}
+          <div style="margin-top:8px;">
+            ${b.status !== 'Completed' ? `
+              <button style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="markCompleted('${b.ticketId}')">
+                Mark Completed 🔴
+              </button>
+            ` : `<span style="color:#10b981; font-weight:bold; font-size:11px;">Completed ✔</span>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function markCompleted(ticketId) {
+    let bookings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    bookings = bookings.map(b => b.ticketId === ticketId ? { ...b, status: 'Completed' } : b);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookings));
+    renderAdminBookings();
+    renderHistory();
+  }
+
+  // Restore Active Session on App Initialization
+  window.onload = function() {
+    renderHistory();
+    const savedSession = localStorage.getItem(ACTIVE_SESSION_KEY);
+    if (savedSession) {
+      try {
+        currentBookingData = JSON.parse(savedSession);
+        renderPassUI(currentBookingData);
+      } catch(e) {
+        console.error("Session restoration error:", e);
+      }
+    }
+  };
+</script>
+
+</body>
+</html>
