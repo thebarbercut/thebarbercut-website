@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Requirement 3: Strictly Lock Zoom In/Out & Prevent Screen Scaling -->
+  <!-- Strict Viewport Settings to Lock Zoom In/Out -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
   <title>THE BARBER CUT - VIP Booking App</title>
 
@@ -10,10 +10,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Requirement 12: html2canvas for High-Res PNG Pass Downloads -->
+  <!-- html2canvas for High-Res PNG Pass Downloads -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-  <!-- Requirement 21: Tesseract.js OCR Engine for UTR & Date Detection -->
+  <!-- Tesseract.js OCR Engine for UTR & Date Detection -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 
   <style>
@@ -29,7 +29,7 @@
       --accent-blue: #38bdf8;
     }
 
-    /* Ultra Pro Max Theme Variations via Settings */
+    /* Ultra Pro Max Theme Variations */
     body.theme-platinum {
       --primary: #e2e8f0;
       --primary-dark: #64748b;
@@ -40,8 +40,12 @@
       --primary-dark: #047857;
       --accent-blue: #34d399;
     }
+    body.theme-crimson {
+      --primary: #ef4444;
+      --primary-dark: #991b1b;
+      --accent-blue: #f43f5e;
+    }
 
-    /* Requirement 3: Touch Lock & Fixed Mobile Screen Rules */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -65,7 +69,6 @@
       user-select: text !important;
     }
 
-    /* Requirement 8: Ultra Pro Max Mobile Frame */
     .app-container {
       max-width: 480px;
       margin: 0 auto;
@@ -75,9 +78,10 @@
       flex-direction: column;
       box-shadow: 0 0 40px rgba(245, 158, 11, 0.2);
       position: relative;
+      padding-bottom: 75px; /* Space for bottom navigation bar */
     }
 
-    /* Top Floating Bar (Live Shop Status + Settings Gear) */
+    /* Top Utility Bar (Live Status) */
     .top-utility-bar {
       position: absolute;
       top: 12px;
@@ -105,26 +109,9 @@
     .dot-open { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
     .dot-closed { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; }
 
-    .btn-settings-gear {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(3, 7, 18, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-
-    /* Requirement 5: Banner & Logo DP */
     .header-banner {
       width: 100%;
-      height: 155px;
+      height: 145px;
       object-fit: cover;
       border-bottom: 2px solid var(--primary);
       filter: brightness(0.85);
@@ -133,14 +120,14 @@
     .shop-header {
       text-align: center;
       padding: 0 15px 12px 15px;
-      margin-top: -48px;
+      margin-top: -45px;
       position: relative;
       z-index: 2;
     }
 
     .shop-logo {
-      width: 95px;
-      height: 95px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       border: 4px solid var(--primary);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
@@ -148,10 +135,9 @@
       background: #111827;
     }
 
-    /* Requirement 11: THE BARBER CUT Title */
     .shop-title {
       font-family: 'Cinzel', serif;
-      font-size: 25px;
+      font-size: 24px;
       font-weight: 900;
       background: linear-gradient(135deg, #ffffff, var(--primary), var(--primary-dark));
       -webkit-background-clip: text;
@@ -166,7 +152,6 @@
       font-weight: 500;
     }
 
-    /* Requirement 1: Shop Location & Socials */
     .address-card {
       background: rgba(245, 158, 11, 0.08);
       border: 1px solid var(--primary);
@@ -204,10 +189,17 @@
     .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .btn-maps { background: linear-gradient(45deg, #2563eb, #1d4ed8); }
 
-    /* Main Content & Cards */
     .main-content {
       padding: 0 15px 25px 15px;
       flex: 1;
+    }
+
+    /* Tab Sections */
+    .app-tab-section {
+      display: none;
+    }
+    .app-tab-section.active-tab {
+      display: block;
     }
 
     .card {
@@ -242,7 +234,6 @@
       margin-bottom: 16px;
     }
 
-    /* Form Controls */
     .form-group {
       margin-bottom: 14px;
     }
@@ -276,7 +267,6 @@
       height: 72px;
     }
 
-    /* QR & Payment Section */
     .qr-box {
       text-align: center;
       background: #030712;
@@ -287,8 +277,8 @@
     }
 
     .qr-img {
-      width: 165px;
-      height: 165px;
+      width: 160px;
+      height: 160px;
       object-fit: contain;
       border-radius: 10px;
       border: 2px solid #ffffff;
@@ -331,7 +321,7 @@
 
     .btn-submit:active { transform: scale(0.97); }
 
-    /* Golden VIP Receipt Card */
+    /* VIP Receipt Styling */
     #golden-vip-pass {
       background: linear-gradient(135deg, #090d16 0%, #2c1203 50%, #090d16 100%);
       border: 2px solid var(--primary);
@@ -428,7 +418,6 @@
       margin-top: 10px;
     }
 
-    /* OCR Scan Indicator */
     .ocr-status-box {
       font-size: 11px;
       padding: 8px 10px;
@@ -441,58 +430,65 @@
     .ocr-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981; }
     .ocr-error { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid #ef4444; }
 
-    /* Settings Modal Drawer */
-    .settings-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(6px);
-      z-index: 100;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
+    /* Feed Post Cards */
+    .feed-post {
+      background: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
     }
-
-    .settings-sheet {
-      background: #111827;
-      border-top: 2px solid var(--primary);
-      border-radius: 22px 22px 0 0;
+    .feed-img {
       width: 100%;
-      max-width: 480px;
-      padding: 20px;
-      max-height: 85vh;
-      overflow-y: auto;
-      animation: slideUp 0.25s ease-out;
+      height: 190px;
+      object-fit: cover;
+    }
+    .feed-body {
+      padding: 14px;
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+    /* Settings Section Items */
+    .settings-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin: 14px 0 8px 0;
     }
 
-    .setting-row {
+    .setting-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #1f2937;
+      padding: 12px 14px;
+      background: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      margin-bottom: 8px;
       font-size: 13px;
+    }
+
+    .setting-item i {
+      color: var(--primary);
+      width: 20px;
+      text-align: center;
+      margin-right: 8px;
     }
 
     .theme-btn-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .theme-dot {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       border: 2px solid #fff;
       cursor: pointer;
     }
 
-    /* User Profile Strip */
     .user-profile-strip {
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.3);
@@ -531,33 +527,72 @@
       color: #6b7280;
       border-top: 1px solid #1f2937;
     }
+
+    /* BOTTOM NAVIGATION BAR */
+    .bottom-nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: 65px;
+      background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.6);
+    }
+
+    .nav-tab-btn {
+      flex: 1;
+      height: 100%;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .nav-tab-btn i {
+      font-size: 18px;
+    }
+
+    .nav-tab-btn.active-nav {
+      color: var(--primary);
+    }
   </style>
 </head>
 <body>
 
 <div class="app-container">
 
-  <!-- Top Live Status & Settings Button -->
+  <!-- Top Utility Bar (Live Status) -->
   <div class="top-utility-bar">
     <div class="live-status-pill" id="live-shop-badge">
       <span class="dot-open"></span> Checking Hours...
     </div>
-    <button class="btn-settings-gear" onclick="openSettingsModal()" title="App Settings">
-      <i class="fa-solid fa-gear"></i>
-    </button>
   </div>
 
-  <!-- Requirement 5: Header Banner & DP -->
+  <!-- Header Banner & DP -->
   <img src="./banner.png" alt="Shop Banner" class="header-banner" onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800'" />
   
   <div class="shop-header">
     <img src="./logo.jpg" alt="Shop Logo" class="shop-logo" onerror="this.src='https://via.placeholder.com/95?text=TBC'" />
-    <!-- Requirement 11: THE BARBER CUT -->
     <div class="shop-title">THE BARBER CUT</div>
     <div class="shop-owner">Proprietor: Vikash Sharma</div>
   </div>
 
-  <!-- Requirement 1: Shop Location & Socials -->
   <div class="address-card">
     <i class="fa-solid fa-location-dot"></i> Maa Chamunda Mandir, Surhari More Bypass Road, Manpur, Gaya (Bihar)
   </div>
@@ -573,212 +608,318 @@
 
   <div class="main-content">
 
-    <!-- STEP 1: CUSTOMER REGISTRATION SCREEN (Name, Phone, Email & OTP) -->
-    <div class="card" id="registration-card">
-      <div class="card-title">
-        <span><i class="fa-solid fa-user-shield"></i> Customer Registration</span>
-        <span style="font-size: 11px; color: var(--primary);">Step 1 of 2</span>
-      </div>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-        Register with your Name, Mobile Number, Email ID, and OTP to unlock VIP Slot Booking.
-      </p>
+    <!-- ================= TAB 1: HOME (🏠 Booking Form & Registration) ================= -->
+    <div id="tab-home" class="app-tab-section active-tab">
 
-      <div class="form-group">
-        <label>Full Name *</label>
-        <input type="text" id="reg-name" class="form-control" placeholder="Enter your full name" />
-      </div>
-
-      <div class="form-group">
-        <label>10-Digit Mobile Number *</label>
-        <input type="tel" id="reg-phone" class="form-control" placeholder="Enter mobile number" maxlength="10" />
-      </div>
-
-      <div class="form-group">
-        <label>Email Address *</label>
-        <input type="email" id="reg-email" class="form-control" placeholder="example@gmail.com" />
-      </div>
-
-      <div id="otp-section" style="display: none;">
-        <div class="form-group">
-          <label>Enter 4-Digit Verification OTP *</label>
-          <input type="number" id="reg-otp-input" class="form-control" placeholder="Enter OTP sent to your screen" maxlength="4" />
-          <small id="otp-hint-box" style="color: #34d399; font-size: 11px; display: block; margin-top: 5px;"></small>
-        </div>
-      </div>
-
-      <button type="button" id="btn-send-otp" class="btn-submit" onclick="sendRegistrationOTP()">
-        Send Verification OTP <i class="fa-solid fa-paper-plane"></i>
-      </button>
-
-      <button type="button" id="btn-verify-reg" class="btn-submit" style="display: none; background: linear-gradient(135deg, #10b981, #059669); color: #fff;" onclick="completeRegistration()">
-        Verify OTP & Continue <i class="fa-solid fa-check-circle"></i>
-      </button>
-    </div>
-
-    <!-- STEP 2: MAIN BOOKING SCREEN (Shown after Registration) -->
-    <div id="booking-workspace" style="display: none;">
-
-      <!-- Logged-in Customer Strip -->
-      <div class="user-profile-strip">
-        <div>
-          <strong style="color: #fff;" id="logged-user-name">User</strong>
-          <div style="font-size: 11px; color: var(--text-muted);" id="logged-user-contact">Phone | Email</div>
-        </div>
-        <button class="btn-copy" style="margin:0; padding: 5px 10px;" onclick="openSettingsModal()">Profile</button>
-      </div>
-
-      <!-- Booking Form Card -->
-      <div class="card" id="booking-form-card">
+      <!-- STEP 1: REGISTRATION SCREEN -->
+      <div class="card" id="registration-card">
         <div class="card-title">
-          <span><i class="fa-solid fa-scissors"></i> Book VIP Appointment</span>
-          <span style="font-size: 11px; color: var(--primary);">Step 2 of 2</span>
+          <span><i class="fa-solid fa-user-shield"></i> Customer Registration</span>
+          <span style="font-size: 11px; color: var(--primary);">Step 1 of 2</span>
         </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+          Register with your Name, Mobile Number, Email ID, and OTP to unlock VIP Slot Booking.
+        </p>
 
-        <!-- Requirement 15: Fixed Rate 449 -->
-        <div class="price-tag-box">
-          <i class="fa-solid fa-tag"></i> Fixed Total Service Rate: ₹449
-        </div>
-
-        <!-- Requirement 2: Customer Details -->
         <div class="form-group">
-          <label>Customer Full Name *</label>
-          <input type="text" id="cust-name" class="form-control" placeholder="Full Name" oninput="saveFormDraft()" />
+          <label>Full Name *</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Enter your full name" />
         </div>
 
         <div class="form-group">
-          <label>Mobile Number *</label>
-          <input type="tel" id="cust-phone" class="form-control" placeholder="10-digit mobile number" maxlength="10" oninput="saveFormDraft()" />
+          <label>10-Digit Mobile Number *</label>
+          <input type="tel" id="reg-phone" class="form-control" placeholder="Enter mobile number" maxlength="10" />
         </div>
 
         <div class="form-group">
-          <label>Full Address (Village / Area / City) *</label>
-          <input type="text" id="cust-address" class="form-control" placeholder="e.g., Manpur, Gaya" oninput="saveFormDraft()" />
+          <label>Email Address *</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="example@gmail.com" />
         </div>
 
-        <!-- Requirement 10: Custom Services Input -->
-        <div class="form-group">
-          <label>Specify Required Services *</label>
-          <textarea id="cust-service" class="form-control" placeholder="Write the exact services you need (Haircut, Beard Styling, Facial, Hair Color...)" oninput="saveFormDraft()"></textarea>
-        </div>
-
-        <!-- Requirement 20: Booking Date & Thursday Closed Validation -->
-        <div class="form-group">
-          <label>Select Booking Date (Closed on Thursdays) *</label>
-          <input type="date" id="cust-date" class="form-control" onchange="validateBookingDate(); saveFormDraft();" />
-        </div>
-
-        <!-- Requirement 20: Shop Open 08:00 AM to 08:00 PM -->
-        <div class="form-group">
-          <label>Select Time Slot (08:00 AM - 08:00 PM) *</label>
-          <select id="cust-time" class="form-control" onchange="saveFormDraft()">
-            <option value="">-- Choose Time Slot --</option>
-            <option value="08:00">08:00 AM</option>
-            <option value="09:00">09:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="13:00">01:00 PM</option>
-            <option value="14:00">02:00 PM</option>
-            <option value="15:00">03:00 PM</option>
-            <option value="16:00">04:00 PM</option>
-            <option value="17:00">05:00 PM</option>
-            <option value="18:00">06:00 PM</option>
-            <option value="19:00">07:00 PM</option>
-            <option value="20:00">08:00 PM</option>
-          </select>
-        </div>
-
-        <!-- Requirement 5: QR Code & Direct Number 9130346008 -->
-        <div class="qr-box">
-          <img src="./qr.jpg" alt="Payment QR Code" class="qr-img" onerror="this.src='https://via.placeholder.com/165?text=Scan+QR+Pay'" />
-          <div style="font-size: 12px; font-weight: 700; color: var(--accent-blue);">UPI / PhonePe / Paytm / GPay</div>
-          <div style="font-size: 12px; color: #ffffff; margin-top: 3px;">Direct Payment Number: <strong>9130346008</strong></div>
-          <div style="font-size: 11px; color: var(--primary); margin-top: 3px; font-weight: 600;">
-            You can also make payment directly on this number: 9130346008
+        <div id="otp-section" style="display: none;">
+          <div class="form-group">
+            <label>Enter 4-Digit Verification OTP *</label>
+            <input type="number" id="reg-otp-input" class="form-control" placeholder="Enter OTP sent on screen" maxlength="4" />
+            <small id="otp-hint-box" style="color: #34d399; font-size: 11px; display: block; margin-top: 5px;"></small>
           </div>
-          <button type="button" class="btn-copy" onclick="copyUPI()">
-            <i class="fa-solid fa-copy"></i> Copy Direct Pay Number
-          </button>
         </div>
 
-        <!-- Requirement 15 & 16: Payment Mode & Exact Advance Amount Validation -->
-        <div class="form-group">
-          <label>Payment Mode *</label>
-          <select id="payment-mode" class="form-control" onchange="toggleAdvanceInput(); saveFormDraft();">
-            <option value="Full">Full Payment (₹449)</option>
-            <option value="Advance">Partial Advance Payment (₹1 to ₹448)</option>
-          </select>
-        </div>
+        <button type="button" id="btn-send-otp" class="btn-submit" onclick="sendRegistrationOTP()">
+          Send Verification OTP <i class="fa-solid fa-paper-plane"></i>
+        </button>
 
-        <div class="form-group" id="advance-group" style="display: none;">
-          <label>Advance Paid Amount (₹1 to ₹448) *</label>
-          <input type="number" id="cust-advance" class="form-control" placeholder="Enter exact advance paid (e.g., 400)" min="1" max="448" oninput="enforceAdvanceLimit(); saveFormDraft();" />
-          <small id="dues-live-hint" style="color: var(--primary); font-size: 11px; margin-top: 4px; display: block;"></small>
-        </div>
-
-        <!-- Requirement 4 & 21: 12-Digit UTR Number -->
-        <div class="form-group">
-          <label>12-Digit Transaction UTR Number *</label>
-          <input type="text" id="cust-utr" class="form-control" placeholder="Enter 12-digit UTR/Ref No." maxlength="12" oninput="saveFormDraft()" />
-        </div>
-
-        <!-- Requirement 6 & 21: Payment Screenshot Upload + OCR Verification -->
-        <div class="form-group">
-          <label>Upload Today's Payment Screenshot *</label>
-          <input type="file" id="cust-ss" class="form-control" accept="image/*" onchange="processPaymentScreenshot(event)" />
-          <div id="ocr-status-box" class="ocr-status-box"></div>
-          <img id="ss-preview" class="screenshot-preview" style="display: none;" />
-        </div>
-
-        <!-- Requirement 19: One-Click VIP Receipt Generation -->
-        <button type="button" class="btn-submit" onclick="generateVIPPass()">
-          Verify & Generate VIP Receipt <i class="fa-solid fa-arrow-right"></i>
+        <button type="button" id="btn-verify-reg" class="btn-submit" style="display: none; background: linear-gradient(135deg, #10b981, #059669); color: #fff;" onclick="completeRegistration()">
+          Verify OTP & Continue <i class="fa-solid fa-check-circle"></i>
         </button>
       </div>
 
-      <!-- Golden VIP Receipt Display -->
-      <div id="golden-vip-pass">
-        <div class="pass-header">
-          <div style="font-family: 'Cinzel', serif; font-size: 19px; font-weight: 900; color: var(--primary);">THE BARBER CUT</div>
-          <div style="font-size: 11px; color: #cbd5e1;">Prop. Vikash Sharma - Manpur, Gaya</div>
-          <div class="pass-ticket-id" id="pass-ticket-id">#TBC-0001</div>
-          <div class="security-code-box">🔐 UNIQUE VERIFICATION ID: <span id="pass-sec-code">SEC-8942</span></div>
+      <!-- STEP 2: BOOKING WORKSPACE -->
+      <div id="booking-workspace" style="display: none;">
+
+        <div class="user-profile-strip">
+          <div>
+            <strong style="color: #fff;" id="logged-user-name">User</strong>
+            <div style="font-size: 11px; color: var(--text-muted);" id="logged-user-contact">Phone | Email</div>
+          </div>
+          <button class="btn-copy" style="margin:0; padding: 5px 10px;" onclick="switchTab('settings')">Profile</button>
         </div>
 
-        <div class="pass-row"><span class="pass-label">Customer Name:</span><span class="pass-value" id="pass-name">-</span></div>
-        <div class="pass-row"><span class="pass-label">Mobile Number:</span><span class="pass-value" id="pass-phone">-</span></div>
-        <div class="pass-row"><span class="pass-label">Address:</span><span class="pass-value" id="pass-address">-</span></div>
-        <div class="pass-row"><span class="pass-label">Services:</span><span class="pass-value" id="pass-services" style="color: var(--primary);">-</span></div>
-        <div class="pass-row"><span class="pass-label">Appointment Slot:</span><span class="pass-value" id="pass-slot">-</span></div>
-        <div class="pass-row"><span class="pass-label">UTR Ref No:</span><span class="pass-value" id="pass-utr" style="color: var(--accent-blue);">-</span></div>
+        <div class="card" id="booking-form-card">
+          <div class="card-title">
+            <span><i class="fa-solid fa-scissors"></i> Book VIP Appointment</span>
+            <span style="font-size: 11px; color: var(--primary);">Step 2 of 2</span>
+          </div>
 
-        <div style="border-top: 1px dashed var(--primary); margin: 12px 0;"></div>
+          <div class="price-tag-box">
+            <i class="fa-solid fa-tag"></i> Fixed Total Service Rate: ₹449
+          </div>
 
-        <div class="pass-row"><span class="pass-label">Total Fixed Rate:</span><span class="pass-value">₹449</span></div>
-        <div class="pass-row"><span class="pass-label">Amount Paid:</span><span class="pass-value" id="pass-paid" style="color: #34d399;">₹0</span></div>
-        <div class="pass-row"><span class="pass-label">Remaining Dues:</span><span class="pass-value" id="pass-dues" style="color: #f87171;">₹0</span></div>
+          <div class="form-group">
+            <label>Customer Full Name *</label>
+            <input type="text" id="cust-name" class="form-control" placeholder="Full Name" oninput="saveFormDraft()" />
+          </div>
 
-        <div id="status-notice-container"></div>
+          <div class="form-group">
+            <label>Mobile Number *</label>
+            <input type="tel" id="cust-phone" class="form-control" placeholder="10-digit mobile number" maxlength="10" oninput="saveFormDraft()" />
+          </div>
 
-        <div style="margin-top: 18px; text-align: center;">
-          <!-- Requirement 6: Share Details & Screenshot to WhatsApp -->
-          <button class="btn-submit" style="background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff;" onclick="shareToWhatsAppWithImage()">
-            <i class="fa-brands fa-whatsapp"></i> Share Details & Screenshot to WhatsApp
-          </button>
-          <!-- Requirement 12: Download VIP Receipt -->
-          <button class="btn-submit" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #ffffff; margin-top: 8px;" onclick="downloadPassImage()">
-            <i class="fa-solid fa-download"></i> Download VIP Receipt Image
-          </button>
-          <button class="btn-submit" style="background: #374151; color: #ffffff; margin-top: 8px;" onclick="resetToNewBooking()">
-            <i class="fa-solid fa-plus"></i> Book Another Appointment
+          <div class="form-group">
+            <label>Full Address (Village / Area / City) *</label>
+            <input type="text" id="cust-address" class="form-control" placeholder="e.g., Manpur, Gaya" oninput="saveFormDraft()" />
+          </div>
+
+          <div class="form-group">
+            <label>Specify Required Services *</label>
+            <textarea id="cust-service" class="form-control" placeholder="Write exact services needed (Haircut, Beard, Facial...)" oninput="saveFormDraft()"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Select Booking Date (Closed on Thursdays) *</label>
+            <input type="date" id="cust-date" class="form-control" onchange="validateBookingDate(); saveFormDraft();" />
+          </div>
+
+          <div class="form-group">
+            <label>Select Time Slot (08:00 AM - 08:00 PM) *</label>
+            <select id="cust-time" class="form-control" onchange="saveFormDraft()">
+              <option value="">-- Choose Time Slot --</option>
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:00">01:00 PM</option>
+              <option value="14:00">02:00 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:00">04:00 PM</option>
+              <option value="17:00">05:00 PM</option>
+              <option value="18:00">06:00 PM</option>
+              <option value="19:00">07:00 PM</option>
+              <option value="20:00">08:00 PM</option>
+            </select>
+          </div>
+
+          <div class="qr-box">
+            <img src="./qr.jpg" alt="Payment QR Code" class="qr-img" onerror="this.src='https://via.placeholder.com/165?text=Scan+QR+Pay'" />
+            <div style="font-size: 12px; font-weight: 700; color: var(--accent-blue);">UPI / PhonePe / Paytm / GPay</div>
+            <div style="font-size: 12px; color: #ffffff; margin-top: 3px;">Direct Payment Number: <strong>9130346008</strong></div>
+            <div style="font-size: 11px; color: var(--primary); margin-top: 3px; font-weight: 600;">
+              You can also make payment directly on this number: 9130346008
+            </div>
+            <button type="button" class="btn-copy" onclick="copyUPI()">
+              <i class="fa-solid fa-copy"></i> Copy Direct Pay Number
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Mode *</label>
+            <select id="payment-mode" class="form-control" onchange="toggleAdvanceInput(); saveFormDraft();">
+              <option value="Full">Full Payment (₹449)</option>
+              <option value="Advance">Partial Advance Payment (₹1 to ₹448)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="advance-group" style="display: none;">
+            <label>Advance Paid Amount (₹1 to ₹448) *</label>
+            <input type="number" id="cust-advance" class="form-control" placeholder="Enter advance paid (e.g., 400)" min="1" max="448" oninput="enforceAdvanceLimit(); saveFormDraft();" />
+            <small id="dues-live-hint" style="color: var(--primary); font-size: 11px; margin-top: 4px; display: block;"></small>
+          </div>
+
+          <div class="form-group">
+            <label>12-Digit Transaction UTR Number *</label>
+            <input type="text" id="cust-utr" class="form-control" placeholder="Enter 12-digit UTR/Ref No." maxlength="12" oninput="saveFormDraft()" />
+          </div>
+
+          <div class="form-group">
+            <label>Upload Today's Payment Screenshot *</label>
+            <input type="file" id="cust-ss" class="form-control" accept="image/*" onchange="processPaymentScreenshot(event)" />
+            <div id="ocr-status-box" class="ocr-status-box"></div>
+            <img id="ss-preview" class="screenshot-preview" style="display: none;" />
+          </div>
+
+          <button type="button" class="btn-submit" onclick="generateVIPPass()">
+            Verify & Generate VIP Receipt <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
+
+        <!-- Golden VIP Receipt Display -->
+        <div id="golden-vip-pass">
+          <div class="pass-header">
+            <div style="font-family: 'Cinzel', serif; font-size: 19px; font-weight: 900; color: var(--primary);">THE BARBER CUT</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Prop. Vikash Sharma - Manpur, Gaya</div>
+            <div class="pass-ticket-id" id="pass-ticket-id">#TBC-0001</div>
+            <div class="security-code-box">🔐 UNIQUE VERIFICATION ID: <span id="pass-sec-code">SEC-8942</span></div>
+          </div>
+
+          <div class="pass-row"><span class="pass-label">Customer Name:</span><span class="pass-value" id="pass-name">-</span></div>
+          <div class="pass-row"><span class="pass-label">Mobile Number:</span><span class="pass-value" id="pass-phone">-</span></div>
+          <div class="pass-row"><span class="pass-label">Address:</span><span class="pass-value" id="pass-address">-</span></div>
+          <div class="pass-row"><span class="pass-label">Services:</span><span class="pass-value" id="pass-services" style="color: var(--primary);">-</span></div>
+          <div class="pass-row"><span class="pass-label">Appointment Slot:</span><span class="pass-value" id="pass-slot">-</span></div>
+          <div class="pass-row"><span class="pass-label">UTR Ref No:</span><span class="pass-value" id="pass-utr" style="color: var(--accent-blue);">-</span></div>
+
+          <div style="border-top: 1px dashed var(--primary); margin: 12px 0;"></div>
+
+          <div class="pass-row"><span class="pass-label">Total Fixed Rate:</span><span class="pass-value">₹449</span></div>
+          <div class="pass-row"><span class="pass-label">Amount Paid:</span><span class="pass-value" id="pass-paid" style="color: #34d399;">₹0</span></div>
+          <div class="pass-row"><span class="pass-label">Remaining Dues:</span><span class="pass-value" id="pass-dues" style="color: #f87171;">₹0</span></div>
+
+          <div id="status-notice-container"></div>
+
+          <div style="margin-top: 18px; text-align: center;">
+            <button class="btn-submit" style="background: linear-gradient(135deg, #25d366, #128c7e); color: #ffffff;" onclick="shareToWhatsAppWithImage()">
+              <i class="fa-brands fa-whatsapp"></i> Share Details & Screenshot to WhatsApp
+            </button>
+            <button class="btn-submit" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #ffffff; margin-top: 8px;" onclick="downloadPassImage()">
+              <i class="fa-solid fa-download"></i> Download VIP Receipt Image
+            </button>
+            <button class="btn-submit" style="background: #374151; color: #ffffff; margin-top: 8px;" onclick="resetToNewBooking()">
+              <i class="fa-solid fa-plus"></i> Book Another Appointment
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>
 
-    <!-- Requirement 14: Contact Support Card -->
-    <div class="support-card">
+    <!-- ================= TAB 2: HISTORY (📋 Receipts History) ================= -->
+    <div id="tab-history" class="app-tab-section">
+      <div class="card">
+        <div class="card-title">
+          <span><i class="fa-solid fa-clock-rotate-left"></i> My VIP Receipts History</span>
+        </div>
+        <div id="booking-history-list">
+          <p style="font-size: 12px; color: #6b7280;">No previous receipts found on this device.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: FEED (📱 Salon Styles & Updates) ================= -->
+    <div id="tab-feed" class="app-tab-section">
+      <div class="card-title" style="margin-bottom:10px;"><i class="fa-solid fa-fire"></i> Salon Style Feed & Gallery</div>
+      
+      <div class="feed-post">
+        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800" class="feed-img" alt="Haircut Style">
+        <div class="feed-body">
+          <strong style="color: var(--primary);">VIP Fade & Beard Styling</strong>
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Get precision cuts and luxury grooming at THE BARBER CUT, Manpur, Gaya. Book your slot in advance!</p>
+        </div>
+      </div>
+
+      <div class="feed-post">
+        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800" class="feed-img" alt="Beard Trim">
+        <div class="feed-body">
+          <strong style="color: var(--primary);">Royal Beard Trim & Spa</strong>
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Experience top-class facial treatments and expert beard shaping by Vikash Sharma.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 4: SETTINGS (⚙️ Settings & Admin) ================= -->
+    <div id="tab-settings" class="app-tab-section">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-sliders"></i> App Settings Dashboard</div>
+
+        <div class="settings-section-title">Display & Appearance</div>
+        
+        <div class="setting-item">
+          <div>
+            <i class="fa-solid fa-palette"></i> <strong>Luxury Color Accent</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Change theme highlight color</div>
+          </div>
+          <div class="theme-btn-group">
+            <div class="theme-dot" style="background:#f59e0b;" onclick="setAppTheme('gold')" title="Royal Gold"></div>
+            <div class="theme-dot" style="background:#e2e8f0;" onclick="setAppTheme('platinum')" title="Platinum Silver"></div>
+            <div class="theme-dot" style="background:#10b981;" onclick="setAppTheme('emerald')" title="Emerald Green"></div>
+            <div class="theme-dot" style="background:#ef4444;" onclick="setAppTheme('crimson')" title="Crimson Red"></div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div>
+            <i class="fa-solid fa-expand"></i> <strong>Screen Zoom Lock</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Lock mobile viewport scaling</div>
+          </div>
+          <span style="font-size:11px; color:#34d399; font-weight:700;"><i class="fa-solid fa-lock"></i> Active</span>
+        </div>
+
+        <div class="settings-section-title">Security & Anti-Fraud</div>
+
+        <div class="setting-item">
+          <div>
+            <i class="fa-solid fa-robot"></i> <strong>Strict OCR Screenshot Lock</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Scan UTR & Date inside screenshots</div>
+          </div>
+          <input type="checkbox" id="setting-strict-ocr" checked style="width:18px; height:18px; accent-color:var(--primary);" />
+        </div>
+
+        <div class="settings-section-title">Account & Database Storage</div>
+
+        <div class="setting-item">
+          <div>
+            <i class="fa-solid fa-user"></i> <strong>Registered Profile</strong>
+            <div style="font-size:11px; color:var(--text-muted);" id="settings-profile-summary">Not Registered</div>
+          </div>
+          <button class="btn-copy" style="margin:0; border-color:#ef4444; color:#ef4444;" onclick="logoutCustomer()">Reset</button>
+        </div>
+
+        <div class="setting-item">
+          <div>
+            <i class="fa-solid fa-database"></i> <strong>Local Cache Storage</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Browser LocalStorage database</div>
+          </div>
+          <button class="btn-copy" style="margin:0;" onclick="clearAppCache()">Clear Cache</button>
+        </div>
+
+        <div class="settings-section-title">Administrator Portal</div>
+
+        <div class="setting-item" style="border-bottom:none;">
+          <div>
+            <i class="fa-solid fa-key"></i> <strong>Owner Master Verification</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Verify customer UTR & receipts</div>
+          </div>
+          <button class="btn-copy" style="margin:0;" onclick="openAdminPanel()">Open Admin</button>
+        </div>
+
+      </div>
+
+      <!-- Admin Panel Section inside Settings -->
+      <div class="card" id="admin-panel" style="display: none; border-color: #ef4444; margin-top:15px;">
+        <div class="card-title" style="color: #ef4444;">
+          <span><i class="fa-solid fa-shield-halved"></i> Owner Admin Verification Panel</span>
+          <button class="btn-copy" style="margin:0; padding:4px 8px; font-size:10px;" onclick="document.getElementById('admin-panel').style.display='none'">Close</button>
+        </div>
+        <div class="form-group">
+          <input type="text" id="admin-search" class="form-control" placeholder="Search Unique ID, UTR, Phone or Name..." onkeyup="renderAdminBookings()" />
+        </div>
+        <div id="admin-bookings-list"></div>
+      </div>
+
+    </div>
+
+    <!-- Contact Support Card -->
+    <div class="support-card" style="margin-top:20px;">
       <div style="color: var(--accent-blue); font-weight: 700; margin-bottom: 4px;">
         <i class="fa-solid fa-headset"></i> Contact Support & Helpdesk
       </div>
@@ -788,104 +929,41 @@
       </a>
     </div>
 
-    <!-- Customer Booking History -->
-    <div class="card" style="margin-top: 18px;">
-      <div class="card-title">
-        <span><i class="fa-solid fa-clock-rotate-left"></i> My VIP Receipts History</span>
-      </div>
-      <div id="booking-history-list">
-        <p style="font-size: 12px; color: #6b7280;">No previous receipts found on this device.</p>
-      </div>
-    </div>
-
-    <!-- Requirement 7 & 17: Owner Admin Receipt Verification Panel -->
-    <div class="card" id="admin-panel" style="display: none; border-color: #ef4444;">
-      <div class="card-title" style="color: #ef4444;">
-        <span><i class="fa-solid fa-shield-halved"></i> Owner Admin Verification Panel</span>
-        <button class="btn-copy" style="margin:0; padding:4px 8px; font-size:10px;" onclick="document.getElementById('admin-panel').style.display='none'">Close</button>
-      </div>
-      <div class="form-group">
-        <input type="text" id="admin-search" class="form-control" placeholder="Search Unique ID (#TBC-0001 / SEC-xxxx), UTR, Phone or Name..." onkeyup="renderAdminBookings()" />
-      </div>
-      <div id="admin-bookings-list"></div>
-    </div>
-
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     © THE BARBER CUT - Prop. Vikash Sharma<br>
-    Maa Chamunda Mandir, Manpur, Gaya (Bihar)<br>
-    <span style="color: var(--primary); cursor: pointer; text-decoration: underline; font-weight: 600; display: inline-block; margin-top: 6px;" onclick="openAdminPanel()">Owner Admin Portal Login</span>
+    Maa Chamunda Mandir, Manpur, Gaya (Bihar)
   </div>
 
-</div>
-
-<!-- ULTRA PRO MAX SETTINGS DRAWER MODAL -->
-<div class="settings-modal" id="settings-modal" onclick="closeSettingsModal(event)">
-  <div class="settings-sheet" onclick="event.stopPropagation()">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #1f2937; padding-bottom:10px;">
-      <strong style="color:var(--primary); font-size:16px;"><i class="fa-solid fa-sliders"></i> App Settings & Controls</strong>
-      <button class="btn-copy" style="margin:0;" onclick="document.getElementById('settings-modal').style.display='none'">✕ Close</button>
-    </div>
-
-    <!-- 1. Theme Selector -->
-    <div class="setting-row">
-      <div>
-        <strong>App Luxury Theme</strong>
-        <div style="font-size:11px; color:var(--text-muted);">Switch VIP interface accent</div>
-      </div>
-      <div class="theme-btn-group">
-        <div class="theme-dot" style="background:#f59e0b;" onclick="setAppTheme('gold')" title="Royal Gold"></div>
-        <div class="theme-dot" style="background:#e2e8f0;" onclick="setAppTheme('platinum')" title="Platinum Silver"></div>
-        <div class="theme-dot" style="background:#10b981;" onclick="setAppTheme('emerald')" title="Emerald VIP"></div>
-      </div>
-    </div>
-
-    <!-- 2. Strict OCR Date/UTR Lock Toggle -->
-    <div class="setting-row">
-      <div>
-        <strong>Strict Screenshot Date & UTR Lock</strong>
-        <div style="font-size:11px; color:var(--text-muted);">Blocks mismatched UTR & old date screenshots</div>
-      </div>
-      <input type="checkbox" id="setting-strict-ocr" checked style="width:18px; height:18px; accent-color:var(--primary);" />
-    </div>
-
-    <!-- 3. Registered Account Info & Logout -->
-    <div class="setting-row">
-      <div>
-        <strong>Registered Customer Profile</strong>
-        <div style="font-size:11px; color:var(--text-muted);" id="settings-profile-summary">Not Registered</div>
-      </div>
-      <button class="btn-copy" style="margin:0; border-color:#ef4444; color:#ef4444;" onclick="logoutCustomer()">Logout / Reset</button>
-    </div>
-
-    <!-- 4. Shop Hours & Rules Info -->
-    <div class="setting-row">
-      <div>
-        <strong>Shop Timings & Weekly Off</strong>
-        <div style="font-size:11px; color:var(--text-muted);">08:00 AM – 08:00 PM (Thursday Closed)</div>
-      </div>
-      <span style="font-size:11px; color:#34d399; font-weight:700;">Verified</span>
-    </div>
-
-    <!-- 5. Owner Admin Portal Shortcut -->
-    <div class="setting-row" style="border-bottom:none;">
-      <div>
-        <strong>Owner Master Verification Panel</strong>
-        <div style="font-size:11px; color:var(--text-muted);">Verify customer unique IDs & UTRs</div>
-      </div>
-      <button class="btn-copy" style="margin:0;" onclick="document.getElementById('settings-modal').style.display='none'; openAdminPanel();">Open Admin</button>
-    </div>
+  <!-- BOTTOM NAVIGATION BAR -->
+  <div class="bottom-nav-bar">
+    <button class="nav-tab-btn active-nav" id="nav-btn-home" onclick="switchTab('home')">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-tab-btn" id="nav-btn-history" onclick="switchTab('history')">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span>History</span>
+    </button>
+    <button class="nav-tab-btn" id="nav-btn-feed" onclick="switchTab('feed')">
+      <i class="fa-solid fa-newspaper"></i>
+      <span>Feed</span>
+    </button>
+    <button class="nav-tab-btn" id="nav-btn-settings" onclick="switchTab('settings')">
+      <i class="fa-solid fa-gear"></i>
+      <span>Setting</span>
+    </button>
   </div>
+
 </div>
 
 <script>
-  const DB_KEY = 'tbc_master_bookings_db_v6';
-  const USER_PROFILE_KEY = 'tbc_registered_user_v6';
-  const ACTIVE_PASS_KEY = 'tbc_active_pass_v6';
-  const DRAFT_KEY = 'tbc_form_draft_v6';
-  const THEME_KEY = 'tbc_app_theme_v6';
+  const DB_KEY = 'tbc_master_bookings_db_v8';
+  const USER_PROFILE_KEY = 'tbc_registered_user_v8';
+  const ACTIVE_PASS_KEY = 'tbc_active_pass_v8';
+  const DRAFT_KEY = 'tbc_form_draft_v8';
+  const THEME_KEY = 'tbc_app_theme_v8';
   const MASTER_PASSWORD = '5393902291912327';
   const FIXED_PRICE = 449;
 
@@ -895,7 +973,6 @@
   let screenshotFileObj = null;
   let scannedOcrText = "";
 
-  // Requirement 3: Lock Multi-Touch Pinch & Double-Tap Zoom
   document.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
   let lastTouchEnd = 0;
   document.addEventListener('touchend', (e) => {
@@ -904,13 +981,11 @@
     lastTouchEnd = now;
   }, false);
 
-  // Initialize App on Load (Requirement 13: Back/Refresh State Restoration)
   window.addEventListener('DOMContentLoaded', () => {
     applySavedTheme();
     updateLiveShopStatus();
     setInterval(updateLiveShopStatus, 60000);
 
-    // Set min date to today so past dates cannot be picked
     const todayISO = new Date().toISOString().split('T')[0];
     document.getElementById('cust-date').setAttribute('min', todayISO);
 
@@ -935,10 +1010,19 @@
     renderHistory();
   });
 
-  // Live Shop Open / Closed Badge (08:00 AM - 08:00 PM, Thursday Closed)
+  // Tab Navigation Switching
+  function switchTab(tabName) {
+    document.querySelectorAll('.app-tab-section').forEach(el => el.classList.remove('active-tab'));
+    document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active-nav'));
+
+    document.getElementById(`tab-${tabName}`).classList.add('active-tab');
+    document.getElementById(`nav-btn-${tabName}`).classList.add('active-nav');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function updateLiveShopStatus() {
     const now = new Date();
-    const day = now.getDay(); // 4 = Thursday
+    const day = now.getDay();
     const hour = now.getHours();
     const badge = document.getElementById('live-shop-badge');
 
@@ -951,29 +1035,11 @@
     }
   }
 
-  // Settings Modal Controls
-  function openSettingsModal() {
-    const regUser = localStorage.getItem(USER_PROFILE_KEY);
-    const summary = document.getElementById('settings-profile-summary');
-    if (regUser) {
-      const u = JSON.parse(regUser);
-      summary.innerText = `${u.name} (${u.phone} | ${u.email})`;
-    } else {
-      summary.innerText = "Not Registered";
-    }
-    document.getElementById('settings-modal').style.display = 'flex';
-  }
-
-  function closeSettingsModal(e) {
-    if (e.target.id === 'settings-modal') {
-      document.getElementById('settings-modal').style.display = 'none';
-    }
-  }
-
   function setAppTheme(themeName) {
-    document.body.classList.remove('theme-platinum', 'theme-emerald');
+    document.body.classList.remove('theme-platinum', 'theme-emerald', 'theme-crimson');
     if (themeName === 'platinum') document.body.classList.add('theme-platinum');
     if (themeName === 'emerald') document.body.classList.add('theme-emerald');
+    if (themeName === 'crimson') document.body.classList.add('theme-crimson');
     localStorage.setItem(THEME_KEY, themeName);
   }
 
@@ -982,7 +1048,13 @@
     if (saved) setAppTheme(saved);
   }
 
-  // STEP 1: Customer Registration with Name, Phone, Email & OTP
+  function clearAppCache() {
+    if (confirm("⚠️ Clear local cache? This will reset form drafts and temporary local data.")) {
+      localStorage.removeItem(DRAFT_KEY);
+      alert("✅ Local cache cleared successfully!");
+    }
+  }
+
   function sendRegistrationOTP() {
     const name = document.getElementById('reg-name').value.trim();
     const phone = document.getElementById('reg-phone').value.trim();
@@ -1026,9 +1098,12 @@
     document.getElementById('logged-user-name').innerText = user.name;
     document.getElementById('logged-user-contact').innerText = `${user.phone} • ${user.email}`;
 
-    // Auto-fill customer name & phone in booking form if empty
     if (!document.getElementById('cust-name').value) document.getElementById('cust-name').value = user.name;
     if (!document.getElementById('cust-phone').value) document.getElementById('cust-phone').value = user.phone;
+
+    // Update profile summary in settings tab
+    const summary = document.getElementById('settings-profile-summary');
+    if(summary) summary.innerText = `${user.name} (${user.phone})`;
   }
 
   function logoutCustomer() {
@@ -1039,7 +1114,6 @@
     }
   }
 
-  // Requirement 13: Save & Restore Form Draft on Back/Refresh
   function saveFormDraft() {
     const draft = {
       name: document.getElementById('cust-name').value,
@@ -1081,7 +1155,6 @@
     alert("✅ Direct Payment Number (9130346008) copied!");
   }
 
-  // Requirement 20: Thursday Closed Check
   function validateBookingDate() {
     const val = document.getElementById('cust-date').value;
     if (!val) return;
@@ -1092,7 +1165,6 @@
     }
   }
 
-  // Requirement 15 & 16: Strict Advance Input Control (₹1 to ₹448)
   function toggleAdvanceInput() {
     const mode = document.getElementById('payment-mode').value;
     const grp = document.getElementById('advance-group');
@@ -1128,7 +1200,6 @@
     hint.innerText = `Advance Paid: ₹${val} | Remaining Dues at Shop: ₹${dues}`;
   }
 
-  // Requirement 21: OCR Screenshot Scanner for UTR & Date Verification
   async function processPaymentScreenshot(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -1160,17 +1231,15 @@
     reader.readAsDataURL(file);
   }
 
-  // Helper: Check if Today's Date matches Screenshot text
   function checkTodaysDateInOCR(ocrRaw) {
     const clean = ocrRaw.toLowerCase();
     const now = new Date();
     const day = String(now.getDate());
     const padDay = day.padStart(2, '0');
-    const monthShort = now.toLocaleString('en-US', { month: 'short' }).toLowerCase(); // e.g., nov
-    const year = String(now.getFullYear()); // e.g., 2026
-
-    // Checks patterns like "16 nov", "16/11", "16-11", "nov 16", or year "2026"
+    const monthShort = now.toLocaleString('en-US', { month: 'short' }).toLowerCase();
+    const year = String(now.getFullYear());
     const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+
     const patterns = [
       `${day} ${monthShort}`,
       `${padDay} ${monthShort}`,
@@ -1183,7 +1252,6 @@
     return patterns.some(p => clean.includes(p));
   }
 
-  // Requirement 4, 15, 16, 17, 19, 21: Generate VIP Receipt
   function generateVIPPass() {
     const name = document.getElementById('cust-name').value.trim();
     const phone = document.getElementById('cust-phone').value.trim();
@@ -1210,7 +1278,6 @@
       return;
     }
 
-    // Strict Advance Validation (₹1 to ₹448)
     let paidAmount = FIXED_PRICE;
     if (mode === 'Advance') {
       paidAmount = parseFloat(advanceVal);
@@ -1221,14 +1288,12 @@
     }
     const duesAmount = FIXED_PRICE - paidAmount;
 
-    // Requirement 4: 1 UTR = 1 VIP Receipt Only
     let bookings = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
     if (bookings.some(b => b.utr === utr)) {
       alert("🚨 RECEIPT FAILED: Duplicate UTR Number!\n\nThis UTR has already been used to generate a VIP receipt.");
       return;
     }
 
-    // Requirement 21: Strict Screenshot UTR & Today's Date Detection
     const strictOcrEnabled = document.getElementById('setting-strict-ocr').checked;
     if (strictOcrEnabled && scannedOcrText.trim().length > 5) {
       const compactOcr = scannedOcrText.replace(/\s+/g, '');
@@ -1242,7 +1307,6 @@
       }
     }
 
-    // Requirement 4 & 17: Unique Ticket ID & Unique Verification Code
     const seq = bookings.length + 1;
     const ticketId = `#TBC-${String(seq).padStart(4, '0')}`;
     const securityCode = `SEC-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -1278,9 +1342,9 @@
     renderPassUI(currentBookingData);
     renderHistory();
     alert("🎉 VIP Receipt Verified & Generated!");
+    switchTab('home');
   }
 
-  // Render VIP Pass UI (Requirement 11, 16, 18)
   function renderPassUI(data) {
     document.getElementById('pass-ticket-id').innerText = data.ticketId;
     document.getElementById('pass-sec-code').innerText = data.securityCode;
@@ -1321,7 +1385,6 @@
     document.getElementById('golden-vip-pass').style.display = 'block';
   }
 
-  // Requirement 6: Share Details & Screenshot to WhatsApp
   async function shareToWhatsAppWithImage() {
     if (!currentBookingData) return;
 
@@ -1344,7 +1407,6 @@
       `💳 UTR Number: ${currentBookingData.utr}\n` +
       `💵 Payment: ${payStatus}`;
 
-    // Try Web Share API with Screenshot File on Mobile
     if (navigator.canShare && screenshotFileObj && navigator.canShare({ files: [screenshotFileObj] })) {
       try {
         await navigator.share({
@@ -1356,12 +1418,10 @@
       } catch (err) {}
     }
 
-    // Fallback: Direct WhatsApp Chat Link to 9130346008
     const encoded = encodeURIComponent(shareText);
     window.open(`https://wa.me/919130346008?text=${encoded}`, '_blank');
   }
 
-  // Requirement 12: Download Receipt Image
   function downloadPassImage() {
     html2canvas(document.getElementById('golden-vip-pass'), { scale: 2 }).then(canvas => {
       const link = document.createElement('a');
@@ -1408,7 +1468,6 @@
     container.innerHTML = html;
   }
 
-  // Requirement 7 & 17: Owner Admin Panel Login & Verification
   function openAdminPanel() {
     const pass = prompt("🔐 Enter Owner Admin Master Password:");
     if (pass === MASTER_PASSWORD) {
